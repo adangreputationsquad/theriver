@@ -1,0 +1,622 @@
+{
+  "site_name": "lemonde.fr",
+  "is_site_verified": false,
+  "category": "News_and_Media",
+  "large_screenshot": "https://site-images.similarcdn.com/image?url=lemonde.fr&t=1&s=1&h=a29556dfb4b47f2e22c70b3f243a937c0efb966a5fc568d99a2b2e2414d1db56",
+  "reach_months": 6,
+  "data_months": 1,
+  "global_rank": {
+    "rank": 453,
+    "direction": -11
+  },
+  "country_rank": {
+    "country": 250,
+    "rank": 18,
+    "direction": 0
+  },
+  "category_rank": {
+    "category": "News_and_Media",
+    "rank": 2,
+    "direction": 0
+  },
+  "title": "le monde.fr - actualit\u00e9s et infos en france et dans le monde",
+  "description": "le monde.fr - 1er site d'information. les articles du journal et toute l'actualit\u00e9 en continu : international, france, soci\u00e9t\u00e9, economie, culture, environnement, blogs ...",
+  "redirect_url": "lemonde.fr",
+  "estimated_monthly_visits": {
+    "2022-12-01": 113811711,
+    "2023-01-01": 108905575,
+    "2023-02-01": 103388076,
+    "2023-03-01": 120688691,
+    "2023-04-01": 105794439,
+    "2023-05-01": 109649887
+  },
+  "engagments": {
+    "year": 2023,
+    "month": 5,
+    "visits": 109649887.0,
+    "time_on_site": 460.7498109649477,
+    "page_per_visit": 3.424877106130264,
+    "bounce_rate": 0.6359087905729951
+  },
+  "top_country_shares": [
+    {
+      "country": "France",
+      "value": 0.7451685792259631,
+      "change": 0.004893686923234191
+    },
+    {
+      "country": "USA",
+      "value": 0.02466413405304732,
+      "change": -0.04328261528668218
+    },
+    {
+      "country": "Belgium",
+      "value": 0.023608144138641936,
+      "change": 0.03900240408435827
+    },
+    {
+      "country": "Canada",
+      "value": 0.02349664056954172,
+      "change": -0.08509875936237006
+    },
+    {
+      "country": "Switzerland",
+      "value": 0.021364095003749372,
+      "change": 0.06789928244297079
+    }
+  ],
+  "total_countries": 252,
+  "traffic_sources": {
+    "search": 0.35990094200630346,
+    "social": 0.048757687130200685,
+    "paid _referrals": 0.0005796006291887608,
+    "referrals": 0.016618577766904903,
+    "mail": 0.031895605072334805,
+    "direct": 0.5422475873950674
+  },
+  "referrals_ratio": 0.016618577766904903,
+  "top_referring": [
+    {
+      "site": "netvibes.com",
+      "value": 0.12847510059390374,
+      "change": -0.004716298698218027
+    },
+    {
+      "site": "wikipedia.org",
+      "value": 0.1278881478538414,
+      "change": -0.005081919477945461
+    },
+    {
+      "site": "jeuxvideo.com",
+      "value": 0.09108456392710028,
+      "change": -0.23972583779808787
+    },
+    {
+      "site": "lexilogos.com",
+      "value": 0.05002196888416781,
+      "change": 0.2650494494399539
+    },
+    {
+      "site": "inoreader.com",
+      "value": 0.0389019218443152,
+      "change": -0.16004334350255237
+    }
+  ],
+  "total_referring": 393,
+  "top_destinations": [
+    {
+      "site": "twitter.com",
+      "value": 0.15614550626514645,
+      "change": 0.07343385516807252
+    },
+    {
+      "site": "lequipe.fr",
+      "value": 0.1086260792864107,
+      "change": -0.05462413337450078
+    },
+    {
+      "site": "lemde.fr",
+      "value": 0.07075037584090327,
+      "change": 0.2385526568951022
+    },
+    {
+      "site": "huffingtonpost.fr",
+      "value": 0.04771324510050842,
+      "change": -0.08411572036080575
+    },
+    {
+      "site": "amazon.fr",
+      "value": 0.04293564912918607,
+      "change": 0.34431328931382454
+    }
+  ],
+  "total_destinations": 446,
+  "search_ratio": 0.35990094200630346,
+  "top_organic_keywords": [
+    {
+      "keyword": "le monde",
+      "value": 0.08259862820730775,
+      "change": -0.030434116647462574
+    },
+    {
+      "keyword": "ukraine",
+      "value": 0.02061175805167059,
+      "change": 0.14648041628981018
+    },
+    {
+      "keyword": "lemonde",
+      "value": 0.018307233940495667,
+      "change": -0.09640502029125192
+    },
+    {
+      "keyword": "actualit\u00e9s",
+      "value": 0.009293473010538846,
+      "change": 0.0057805098486639955
+    },
+    {
+      "keyword": "turquie",
+      "value": 0.008071072217569107,
+      "change": 5.139357711323482
+    }
+  ],
+  "top_paid_keywords": [
+    {
+      "keyword": "le monde",
+      "value": 0.289569942138532,
+      "change": 0.7348280520894316
+    },
+    {
+      "keyword": "lemonde",
+      "value": 0.048991100442524436,
+      "change": 0.3953436876671994
+    },
+    {
+      "keyword": "french news",
+      "value": 0.03297389781889273,
+      "change": -0.1982232362964686
+    },
+    {
+      "keyword": "le monde english",
+      "value": 0.026764081064952545,
+      "change": -0.059706087691813084
+    },
+    {
+      "keyword": "france news",
+      "value": 0.021952045941973065,
+      "change": 0.03330152272451616
+    }
+  ],
+  "organic_keywords_rolling_unique_count": 18611,
+  "paid_keywords_rolling_unique_count": 39,
+  "organic_search_share": 0.9947727125381934,
+  "paid_search_share": 0.005227287461806589,
+  "social_ratio": 0.048757687130200685,
+  "top_social": [
+    {
+      "name": "twitter.com",
+      "icon": "https://site-images.similarcdn.com/image?url=twitter&t=2&s=1&h=0e069d7bb8db53a24970e210b5bd1e187bb1e96432f79f7ee7899f40cd12261a",
+      "site": "Twitter",
+      "value": 0.36170111500526336,
+      "change": -0.15674623418965705
+    },
+    {
+      "name": "l.facebook.com",
+      "icon": "https://site-images.similarcdn.com/image?url=facebook&t=2&s=1&h=f40e4fb6c1ee76ff3310f84ae05ed45b6d7b5566c2c66d4f6e8de8f9d281885b",
+      "site": "Facebook",
+      "value": 0.16503823798746262,
+      "change": 0.047355012098067396
+    },
+    {
+      "name": "youtube.com",
+      "icon": "https://site-images.similarcdn.com/image?url=youtube&t=2&s=1&h=3eb0368d3b16ae09058c8d2d18bd3200710d13b70835ff604a1330d054425fb5",
+      "site": "Youtube",
+      "value": 0.15160062531816446,
+      "change": -0.015973409773358843
+    },
+    {
+      "name": "linkedin.com",
+      "icon": "https://site-images.similarcdn.com/image?url=linkedin&t=2&s=1&h=5f00f188ddec5fc72fab17a2aff1b377caf593bae811d07570ee88dc83b71b95",
+      "site": "Linkedin",
+      "value": 0.10538374896076169,
+      "change": 0.17992858290511093
+    },
+    {
+      "name": "facebook.com",
+      "icon": "https://site-images.similarcdn.com/image?url=facebook&t=2&s=1&h=f40e4fb6c1ee76ff3310f84ae05ed45b6d7b5566c2c66d4f6e8de8f9d281885b",
+      "site": "Facebook",
+      "value": 0.08814271019492911,
+      "change": -0.18223183692167527
+    }
+  ],
+  "display_ads_ratio": 0.0005796006291887608,
+  "top_publishers": [
+    {
+      "site": "leboncoin.fr",
+      "value": 0.7241379310344828,
+      "change": 0.4556255239744286
+    },
+    {
+      "site": "allocine.fr",
+      "value": 0.2241379310344828,
+      "change": 0.2935166906593039
+    },
+    {
+      "site": "courrierinternational.com",
+      "value": 0.008620689655172412,
+      "change": 0.0
+    },
+    {
+      "site": "millenium.org",
+      "value": 0.008620689655172412,
+      "change": 0.0
+    },
+    {
+      "site": "larousse.fr",
+      "value": 0.008620689655172412,
+      "change": 0.0
+    }
+  ],
+  "top_ad_networks": [
+    {
+      "site": "Google Display Network",
+      "value": 0.960605120125605,
+      "change": 0.29787766086092565
+    },
+    {
+      "site": "Outbrain",
+      "value": 0.031237667339562507,
+      "change": -0.6862702894502309
+    },
+    {
+      "site": "Criteo",
+      "value": 0.004770357221781384,
+      "change": -0.6772742568045854
+    },
+    {
+      "site": "Unidentified Networks",
+      "value": 0.003386855313051072,
+      "change": -0.9515805585892763
+    }
+  ],
+  "incoming_ads_rolling_unique_count": 8,
+  "also_visited_unique_count": 9957,
+  "similar_sites": [
+    {
+      "site": "lefigaro.fr",
+      "screenshot": "https://site-images.similarcdn.com/image?url=lefigaro.fr&t=0&s=1&h=9de28886d094faabc3345c62187491fd20a8256ba2ebcc1dca1bee79446266d1",
+      "rank": 524
+    },
+    {
+      "site": "leparisien.fr",
+      "screenshot": "https://site-images.similarcdn.com/image?url=leparisien.fr&t=0&s=1&h=c62672f12c9335a71e201b4db7e87aaac015bb52f3558d06a55f49541fb30afc",
+      "rank": 1557
+    },
+    {
+      "site": "lepoint.fr",
+      "screenshot": "https://site-images.similarcdn.com/image?url=lepoint.fr&t=0&s=1&h=06bcbb6252e2c96165063dff270084cb420d64e95e854afbd5fcaa650d8d5fc8",
+      "rank": 4371
+    },
+    {
+      "site": "liberation.fr",
+      "screenshot": "https://site-images.similarcdn.com/image?url=liberation.fr&t=0&s=1&h=482fab196275d6aa8b276976c555b769bde82cd3dcb0f66de2308bb44e4d6681",
+      "rank": 5490
+    },
+    {
+      "site": "20minutes.fr",
+      "screenshot": "https://site-images.similarcdn.com/image?url=20minutes.fr&t=0&s=1&h=64a71550eedbc7367538c52d29e813a38571c3c690dc1fef10e6152e421474c1",
+      "rank": 1337
+    },
+    {
+      "site": "lexpress.fr",
+      "screenshot": "https://site-images.similarcdn.com/image?url=lexpress.fr&t=0&s=1&h=ba0516ae64c4e7eabba38b87a71d56191e26d907f5f3fc7488dd2074db758637",
+      "rank": 9809
+    },
+    {
+      "site": "lesechos.fr",
+      "screenshot": "https://site-images.similarcdn.com/image?url=lesechos.fr&t=0&s=1&h=47f1bfacf016b46e3c625254c9df636ec778bb631a7642b08d4d17578e082504",
+      "rank": 6583
+    },
+    {
+      "site": "mediapart.fr",
+      "screenshot": "https://site-images.similarcdn.com/image?url=mediapart.fr&t=0&s=1&h=c67a06e5552962cdf427bf2d9f4c3bd4cc6698864a06ac14a657ef6248a48793",
+      "rank": 14222
+    },
+    {
+      "site": "courrierinternational.com",
+      "screenshot": "https://site-images.similarcdn.com/image?url=courrierinternational.com&t=0&s=1&h=fb7a7f02b159c246d4209991eb2de176a134d907651d6faa464d4c13093e7559",
+      "rank": 13208
+    },
+    {
+      "site": "francetvinfo.fr",
+      "screenshot": "https://site-images.similarcdn.com/image?url=francetvinfo.fr&t=0&s=1&h=473f2ce25e69478754184276c6034edef1f30306ebdc0c98bed0df4aeeed0480",
+      "rank": 1412
+    }
+  ],
+  "similar_sites_by_rank": [
+    {
+      "site": "msn.com",
+      "screenshot": "https://site-images.similarcdn.com/image?url=msn.com&t=0&s=1&h=0e9d9ff92e58e52339a7efacceaa06a7e68aa6a51e59b91207ae666108368a10",
+      "rank": 50
+    },
+    {
+      "site": "nytimes.com",
+      "screenshot": "https://site-images.similarcdn.com/image?url=nytimes.com&t=0&s=1&h=4ac64aeeb8e35d92fb646e1ad48c3191db51e5cf15d5ab9ddefdd2ff959bf8f1",
+      "rank": 82
+    },
+    {
+      "site": "news.google.com",
+      "screenshot": "https://site-images.similarcdn.com/image?url=news.google.com&t=0&s=1&h=72ee5822b051b126c9224b509faf7ca137f108a748f5c9aae60e7842933e6634",
+      "rank": 119
+    },
+    {
+      "site": "theguardian.com",
+      "screenshot": "https://site-images.similarcdn.com/image?url=theguardian.com&t=0&s=1&h=ab454b700908b1922212c63399b614e1d1b6a0d25fbdaa0214317efda8a199cd",
+      "rank": 126
+    },
+    {
+      "site": "lefigaro.fr",
+      "screenshot": "https://site-images.similarcdn.com/image?url=lefigaro.fr&t=0&s=1&h=9de28886d094faabc3345c62187491fd20a8256ba2ebcc1dca1bee79446266d1",
+      "rank": 524
+    },
+    {
+      "site": "ouest-france.fr",
+      "screenshot": "https://site-images.similarcdn.com/image?url=ouest-france.fr&t=0&s=1&h=cb85f0682c61dbf33b70f6d73d27d571604749e9922f3037796f4b0a4c5dca91",
+      "rank": 702
+    },
+    {
+      "site": "gala.fr",
+      "screenshot": "https://site-images.similarcdn.com/image?url=gala.fr&t=0&s=1&h=cf27f42a8d0a9b05a7d2b876f7dbca602d9eb9b888be8b6a874cb57e88540540",
+      "rank": 1231
+    },
+    {
+      "site": "20minutes.fr",
+      "screenshot": "https://site-images.similarcdn.com/image?url=20minutes.fr&t=0&s=1&h=64a71550eedbc7367538c52d29e813a38571c3c690dc1fef10e6152e421474c1",
+      "rank": 1337
+    },
+    {
+      "site": "francetvinfo.fr",
+      "screenshot": "https://site-images.similarcdn.com/image?url=francetvinfo.fr&t=0&s=1&h=473f2ce25e69478754184276c6034edef1f30306ebdc0c98bed0df4aeeed0480",
+      "rank": 1412
+    },
+    {
+      "site": "leparisien.fr",
+      "screenshot": "https://site-images.similarcdn.com/image?url=leparisien.fr&t=0&s=1&h=c62672f12c9335a71e201b4db7e87aaac015bb52f3558d06a55f49541fb30afc",
+      "rank": 1557
+    }
+  ],
+  "mobile_apps": {
+    "0 com.forecomm.mondereligion": {
+      "key": 0,
+      "app_id": "com.forecomm.mondereligion",
+      "title": "Le Monde des Religions",
+      "cover": "https://play-lh.googleusercontent.com/iTAnWKEkt_Fi6ED37BUol-Cti1094TyN_VinU3uK6i_3vGrS1LLT6Lpb24EcKqmbzdKc=s180",
+      "author": "Malesherbes Publications",
+      "category": "News & Magazines",
+      "price": "Free",
+      "rating": 3.200000047683716,
+      "rating_count": 21,
+      "valid": true
+    },
+    "0 com.lemonde.androidapp": {
+      "key": 0,
+      "app_id": "com.lemonde.androidapp",
+      "title": "Le Monde, Actualit\u00e9s en direct",
+      "cover": "https://play-lh.googleusercontent.com/aN_UGrgEUuShQGFMU1Kuhwy2cCU6CL9spKqAyP4MREEPzJuqrxvKQGPqPAyrshjmZM0=s180",
+      "author": "Le Monde",
+      "category": "News & Magazines",
+      "price": "Free",
+      "rating": 4.393590450286865,
+      "rating_count": 114770,
+      "valid": true
+    },
+    "0 com.lemonde.androidapp.journal": {
+      "key": 0,
+      "app_id": "com.lemonde.androidapp.journal",
+      "title": "Journal Le Monde",
+      "cover": "https://play-lh.googleusercontent.com/qDgegR14XFSvoegPJWrJDBiekG8c35NLF6D0sOwyBMD3rMinSLBd5xg_H6Jc5MvAWj8=s180",
+      "author": "Le Monde",
+      "category": "News & Magazines",
+      "price": "Free",
+      "rating": 4.505836486816406,
+      "rating_count": 2579,
+      "valid": true
+    },
+    "0 com.lemonde.morning": {
+      "key": 0,
+      "app_id": "com.lemonde.morning",
+      "title": "La Matinale du Monde",
+      "cover": "https://play-lh.googleusercontent.com/Ecm08I3HzcOFAHR55yUEEZx2P-g0MMjv3cHCFsxjtSprvvbpKXOCbe9SaKbfdp9I=s180",
+      "author": "Le Monde",
+      "category": "News & Magazines",
+      "price": "Free",
+      "rating": 4.45448637008667,
+      "rating_count": 15386,
+      "valid": true
+    },
+    "0 fr.lemonde.ftqmobile": {
+      "key": 0,
+      "app_id": "fr.lemonde.ftqmobile",
+      "title": "Learn French with Le Monde",
+      "cover": "https://play-lh.googleusercontent.com/RzT9xWHCp0G0ukp4O5c_S2cWaNYJNAXis0UqN2Z0PwP9_KdyZBTex8hM_9RSpxdAzsb6=s180",
+      "author": "Le Monde",
+      "category": "Education",
+      "price": "Free",
+      "rating": 4.4110236167907715,
+      "rating_count": 6357,
+      "valid": true
+    },
+    "0 fr.lemonde.ggmobile": {
+      "key": 0,
+      "app_id": "fr.lemonde.ggmobile",
+      "title": "English lessons - Le Monde",
+      "cover": "https://play-lh.googleusercontent.com/7-xPPq9x2i9FP6OgZOZGsRIGeXJCKEq9308TjOJsBV9Atf7Zv2PlxbExklS4DcBcRUzI=s180",
+      "author": "Le Monde",
+      "category": "Education",
+      "price": "Free",
+      "rating": 4.159999847412109,
+      "rating_count": 483,
+      "valid": true
+    },
+    "0 fr.lemonde.gsmobile": {
+      "key": 0,
+      "app_id": "fr.lemonde.gsmobile",
+      "title": "Orthographe et grammaire",
+      "cover": "https://play-lh.googleusercontent.com/U6W2aQDtAicri_oee1m9Y8oqXb359TrkSNG9JsI118hD6xbE1QWHAxdv9Y6IKV6hT50n=s180",
+      "author": "Le Monde",
+      "category": "Education",
+      "price": "Free",
+      "rating": 4.084415435791016,
+      "rating_count": 1531,
+      "valid": true
+    },
+    "0 fr.lemonde.memorable": {
+      "key": 0,
+      "app_id": "fr.lemonde.memorable",
+      "title": "Le Monde - M\u00e9morable",
+      "cover": "https://play-lh.googleusercontent.com/b-mcLIdpneL2e_ZZt-6TJAcqvaWrxQcLlphVFNbIDxSExt_l-v5qn9fbbIQjw22jXrc=s180",
+      "author": "Le Monde",
+      "category": "Education",
+      "price": "Free",
+      "rating": 4.56050968170166,
+      "rating_count": 1553,
+      "valid": true
+    },
+    "1 1178554672": {
+      "key": 1,
+      "app_id": "1178554672",
+      "title": "Le Monde - Orthographe",
+      "cover": "https://is2-ssl.mzstatic.com/image/thumb/Purple126/v4/42/8f/21/428f216d-bc23-83bf-0ba2-b53274326d8a/AppIcon-0-0-1x_U007emarketing-0-0-0-7-0-0-sRGB-0-0-0-GLES2_U002c0-512MB-85-220-0-0.png/175x175bb.jpg",
+      "author": "Le Monde Interactif",
+      "category": "Education",
+      "price": "Free",
+      "rating": 4.58333,
+      "rating_count": 24,
+      "valid": true
+    },
+    "1 1459280268": {
+      "key": 1,
+      "app_id": "1459280268",
+      "title": "Le Monde M\u00e9morable - Culture G",
+      "cover": "https://is5-ssl.mzstatic.com/image/thumb/Purple113/v4/99/0e/ae/990eae26-6a6f-b4f9-b9d3-2a3c50763cfe/AppIcon-0-0-1x_U007emarketing-0-0-0-7-0-0-sRGB-0-0-0-GLES2_U002c0-512MB-85-220-0-0.png/175x175bb.jpg",
+      "author": "Le Monde Interactif",
+      "category": "Education",
+      "price": "Free",
+      "rating": 4.63636,
+      "rating_count": 33,
+      "valid": true
+    }
+  },
+  "daily_visits_min_date": "2022-12-01",
+  "daily_visits_max_date": "2023-05-31",
+  "top_categories": [
+    {
+      "category": "Unknown",
+      "affinity": 0.0708727478371915
+    },
+    {
+      "category": "News_and_Media",
+      "affinity": 0.04982441776799465
+    },
+    {
+      "category": "Computers_Electronics_and_Technology/Computers_Electronics_and_Technology",
+      "affinity": 0.04683172309423304
+    },
+    {
+      "category": "Adult",
+      "affinity": 0.044741114108385674
+    },
+    {
+      "category": "Computers_Electronics_and_Technology/Programming_and_Developer_Software",
+      "affinity": 0.03735847769203301
+    }
+  ],
+  "top_also_visited": [
+    "fr.wikipedia.org",
+    "lefigaro.fr",
+    "francetvinfo.fr",
+    "lequipe.fr",
+    "liberation.fr"
+  ],
+  "tags": [
+    {
+      "tag": "des",
+      "strength": 1.0
+    },
+    {
+      "tag": "france",
+      "strength": 0.5798825843932189
+    },
+    {
+      "tag": "pour",
+      "strength": 0.4902998438128424
+    },
+    {
+      "tag": "news",
+      "strength": 0.4753691957943922
+    },
+    {
+      "tag": "une",
+      "strength": 0.37030699399911343
+    },
+    {
+      "tag": "sur",
+      "strength": 0.35208024075498145
+    },
+    {
+      "tag": "accueil",
+      "strength": 0.30594435151043803
+    },
+    {
+      "tag": "paris",
+      "strength": 0.23007120923373808
+    },
+    {
+      "tag": "vous",
+      "strength": 0.22768371471299112
+    },
+    {
+      "tag": "blog",
+      "strength": 0.20518819257450208
+    },
+    {
+      "tag": "lire",
+      "strength": 0.18369018250490293
+    },
+    {
+      "tag": "shopping",
+      "strength": 0.18296363738731425
+    },
+    {
+      "tag": "et",
+      "strength": 0.1821296338066556
+    },
+    {
+      "tag": "actualit\u00e9s",
+      "strength": 0.18112965566738398
+    },
+    {
+      "tag": "presse",
+      "strength": 0.17847370538204668
+    },
+    {
+      "tag": "suite",
+      "strength": 0.165979956481286
+    },
+    {
+      "tag": "magazine",
+      "strength": 0.16266978393677603
+    },
+    {
+      "tag": "plus",
+      "strength": 0.15587722788539998
+    },
+    {
+      "tag": "dans",
+      "strength": 0.15155600194671962
+    },
+    {
+      "tag": "recherche",
+      "strength": 0.14914531487552274
+    }
+  ]
+}
