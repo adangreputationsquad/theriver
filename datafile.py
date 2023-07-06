@@ -1,16 +1,14 @@
-import json
-from typing import Any, Callable, TYPE_CHECKING
-import pandas as pd
+from typing import Any, TYPE_CHECKING
 from abc import ABC, abstractmethod
 
-if TYPE_CHECKING:
-    from datastudy import DataStudy
+from datastudy import DataStudy
 
 
 class DataFile(ABC):
 
     @abstractmethod
-    def __init__(self, study: "DataStudy", data: Any, name="", desc="") -> None:
+    def __init__(self, study: DataStudy, data: Any, name="",
+                 desc="") -> None:
         self._study = study
         self._data = data
         self._name = name
@@ -48,5 +46,3 @@ class DataFile(ABC):
     @abstractmethod
     def make_list_view(self, *args) -> None:
         pass
-
-

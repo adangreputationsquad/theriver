@@ -2,11 +2,12 @@ import json
 from typing import Any, Optional
 from utils import remove_lists_from_json, get_matching_elements
 from datafile import DataFile
+from datastudy import DataStudy
 
 
 class JSONDataFile(DataFile):
 
-    def __init__(self, study: "DataStudy", data: Any, name, desc) -> None:
+    def __init__(self, study: DataStudy, data: Any, name, desc) -> None:
         super().__init__(study, data, name, desc)
 
     @property
@@ -15,7 +16,7 @@ class JSONDataFile(DataFile):
 
     @staticmethod
     def from_json(
-            study: "DataStudy",
+            study: DataStudy,
             path: str,
             name: str,
             desc: str

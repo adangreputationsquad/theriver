@@ -1,13 +1,12 @@
 from typing import Any
-
 import pandas as pd
 from datafile import DataFile
+from datastudy import DataStudy
 
 
 class FrameDataFile(DataFile):
-
     def __init__(
-            self, study: "DataStudy", data: Any, name: str, desc: str
+            self, study: DataStudy, data: Any, name: str, desc: str
     ) -> None:
         super().__init__(study, data, name, desc)
 
@@ -16,7 +15,7 @@ class FrameDataFile(DataFile):
         return self._data
 
     @staticmethod
-    def from_csv(study: "DataStudy", *args, **kwargs) -> 'FrameDataFile':
+    def from_csv(study: DataStudy, *args, **kwargs) -> 'FrameDataFile':
         instance = FrameDataFile(
             study=study,
             name=kwargs.pop("name", ""),
