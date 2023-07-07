@@ -5,12 +5,13 @@ from dataviz.dataviz import DataStudyRenderer
 
 
 def add(renderer: DataStudyRenderer, source: PointView, *args, **kwargs):
-    if isinstance(source.data, list):
-        data = source.data
-    elif isinstance(source.data, dict):
-        data = list(source.data.values())
-    else:
+    if not isinstance(source.data, dict):
         raise AssertionError()
+
     renderer.plots.append(
-        html.Div(children=[html.Div([str(data)])])
+        html.Div(children=[html.Div(
+            [str("<br>".join([
+                f'{key}: {val}' for key, val in source.data.items()
+            ]))]
+        )])
     )

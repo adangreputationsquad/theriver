@@ -24,25 +24,15 @@ class ListView(View):
     def __init__(self, name: str, data: list) -> None:
         super().__init__(name, data)
 
-    def __getitem__(self, key: int) -> Any:
-        return self.data[key]
 
-    def __len__(self) -> int:
-        return len(self.data)
-
-
-class DictionaryView(View):
+class DictView(View):
     def __init__(self, name: str, data: dict) -> None:
         super().__init__(name, data)
 
     def __getitem__(self, item):
         return self.data[item]
 
-    def keys(self):
-        return self.data.keys()
 
-    def values(self):
-        return self.data.values()
-
-    def items(self):
-        return self.data.items()
+class DfView(View):
+    def __init__(self, name: str, data: pd.DataFrame) -> None:
+        super().__init__(name, data)

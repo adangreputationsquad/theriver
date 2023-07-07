@@ -1,7 +1,7 @@
-from typing import Any, Optional
+from typing import Any
 from abc import ABC, abstractmethod
 from study.datastudy import DataStudy
-from study.views.view import View
+from study.views.view import View, PointView, ListView, DictView, DfView
 from dataviz.plot_types import PLOT
 
 
@@ -46,13 +46,20 @@ class DataFile(ABC):
         self._study.add_plot(view, plot_type)
 
     @abstractmethod
-    def make_point_view(self, *args) -> None:
+    def make_point_view(self, *args) -> PointView:
         pass
 
     @abstractmethod
-    def make_list_view(self, *args) -> None:
+    def make_list_view(self, *args) -> ListView:
         pass
 
     @abstractmethod
-    def make_dict_view(self, *args) -> None:
+    def make_dict_view(self, *args) -> DictView:
         pass
+
+    @abstractmethod
+    def make_df_view(self, *args) -> DfView:
+        pass
+
+    def make_plot(self, view: View, plot_type: PLOT):
+        self._study.add_plot(view, plot_type)

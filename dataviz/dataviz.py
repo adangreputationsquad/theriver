@@ -1,6 +1,6 @@
 from dash import Dash, html
 
-from study.views.view import View
+from study.views.view import View, DfView
 from dataviz.plot_types import PLOT
 
 
@@ -32,13 +32,14 @@ class DataStudyRenderer:
             children=children,
         )
 
-    def add_plot(self, view: View, plot_type: PLOT):
+    def add_plot(self, view: View, plot_type: PLOT, *args, **kwargs):
         from .src import components as cp
-        from study.views.view import PointView, ListView, DictionaryView
+        from study.views.view import PointView, ListView, DictView
 
         for plot, view_type in [(PLOT.POINT, PointView),
                                 (PLOT.LIST, ListView),
-                                (PLOT.DICT, DictionaryView)]:
+                                (PLOT.DICT, DictView),
+                                (PLOT.DF, DfView)]:
             if (isinstance(plot_type, plot) and
                     not isinstance(view, view_type)):
                 raise AssertionError(
@@ -48,13 +49,19 @@ class DataStudyRenderer:
 
         match plot_type:
             case PLOT.POINT.NAME_VALUE:
-                cp.point_name_value.add(self, view)
+                cp.point_name_value.add(self, view, *args, **kwargs)
                 return
             case PLOT.POINT.VALUE:
-                cp.point_value.add(self, view)
+                cp.point_value.add(self, view, *args, **kwargs)
                 return
             case PLOT.DICT.ALL_VALUES | PLOT.LIST.ALL_VALUES:
-                cp.all_values.add(self, view)
+                cp.all_values.add(self, view, *args, **kwargs)
+                return
+            case PLOT.DICT.ALL_KEYS_VALUES:
+                cp.all_keys_values.add(self, view, *args, **kwargs)
+                return
+            case PLOT.DICT.TIMESERIES | PLOT.DF.TIMESERIES:
+                cp.timeseries.add(self, view, *args, **kwargs)
                 return
 
-        raise NotImplementedError()
+        raise NotImplementedError(plot_type)

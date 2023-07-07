@@ -59,5 +59,5 @@ class DataStudy:
     def render(self) -> None:
         self._renderer.run()
 
-    def add_plot(self, view: View, plot_type: PLOT):
-        self._renderer.add_plot(view, plot_type)
+    def add_plot(self, view: View, plot_type: PLOT, *args, **kwargs):
+        self._renderer.add_plot(view, plot_type, *args, **kwargs)

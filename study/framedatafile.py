@@ -4,7 +4,7 @@ import pandas as pd
 from dataviz.plot_types import PLOT
 from .datafile import DataFile
 from .datastudy import DataStudy
-from .views.view import PointView, ListView, DictionaryView
+from .views.view import PointView, ListView, DictView, DfView
 
 
 class FrameDataFile(DataFile):
@@ -40,12 +40,13 @@ class FrameDataFile(DataFile):
     def make_point_view(
             self, name: str, col: str, row: int,
             plot: Optional[PLOT.POINT] = None
-            ) -> None:
+            ) -> PointView:
         view = PointView(name, self.data[col].loc[row])
         self.add_view(view)
 
         if plot is not None:
             self.add_plot(view, plot)
+        return view
 
     def make_list_view(
             self, name: str,
@@ -53,7 +54,7 @@ class FrameDataFile(DataFile):
             row: int = None,
             elems: list[str, int] = None,
             plot: Optional[PLOT.LIST] = None
-    ) -> None:
+    ) -> ListView:
         if col is None and row is None and elems is None:
             raise ValueError("col, row, or elems must be specified")
         if (col is not None) + (row is not None) + (elems is not None) > 1:
@@ -74,20 +75,43 @@ class FrameDataFile(DataFile):
 
         if plot is not None:
             self.add_plot(view, plot)
+        return view
 
     def make_dict_view(
             self, name: str,
             col_key: str,
             col_value: str,
             plot: Optional[PLOT.LIST] = None
-    ) -> None:
+    ) -> DictView:
 
         dictionary = {
             key: value for key, value in
             zip(self.data[col_key], self.data[col_value])
         }
-        view = DictionaryView(name, dictionary)
+        view = DictView(name, dictionary)
         self.add_view(view)
 
         if plot is not None:
             self.add_plot(view, plot)
+        return view
+
+    def make_df_view(self,
+                     name: str,
+                     cols: list[str] | str,
+                     rows: Optional[list[int]] = None,
+                     plot: Optional[PLOT.DF] = None
+                     ) -> DfView:
+
+        if isinstance(cols, str):
+            cols = [cols]
+
+        df = self.data[cols]
+        if rows is not None:
+            df = df.loc[rows]
+        view = DfView(name, df)
+        self.add_view(view)
+
+        if plot is not None:
+            self.add_plot(view, plot)
+
+        return view
