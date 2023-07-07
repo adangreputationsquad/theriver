@@ -49,5 +49,5 @@ class DataFile(ABC):
         pass
 
     @abstractmethod
-    def make_timeseries_view(self, *args) -> None:
+    def make_dict_view(self, *args) -> None:
         pass

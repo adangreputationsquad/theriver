@@ -1,4 +1,3 @@
-from dataclasses import dataclass
 from abc import ABC
 from typing import Any
 
@@ -32,25 +31,18 @@ class ListView(View):
         return len(self.data)
 
 
-class TimeseriesView(View):
-    def __init__(self, name: str, data: pd.DataFrame,
-                 time_col: str, value_col: str,
-                 time_format="mixed") -> None:
-        data = data[[time_col, value_col]]
+class DictionaryView(View):
+    def __init__(self, name: str, data: dict) -> None:
         super().__init__(name, data)
-        self.time_col = time_col
-        self.value_col = value_col
-        self.data.loc[:, self.time_col] = (
-            pd.to_datetime(self.data[self.time_col], format=time_format)
-        )
 
     def __getitem__(self, item):
-        return self.data.query(f"{self.time_col} == {item}")
+        return self.data[item]
 
-    @property
-    def times(self):
-        return self.data[self.time_col]
+    def keys(self):
+        return self.data.keys()
 
-    @property
     def values(self):
-        return self.data[self.value_col]
+        return self.data.values()
+
+    def items(self):
+        return self.data.items()

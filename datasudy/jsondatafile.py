@@ -1,12 +1,10 @@
 import json
 from typing import Any, Optional
 
-import pandas as pd
-
 from .utils import remove_lists_from_json, math_pattern_to_values
 from .datafile import DataFile
 from .datastudy import DataStudy
-from .views.view import PointView, ListView, TimeseriesView
+from .views.view import PointView, ListView, DictionaryView
 
 
 class JSONDataFile(DataFile):
@@ -64,49 +62,36 @@ class JSONDataFile(DataFile):
             self.add_view(name, view)
             return
 
-    def make_timeseries_view(
+    def make_dict_view(
             self, name: str, *, pattern: str = None,
-            time_pattern: str = None,
+            key_pattern: str = None,
             value_pattern: str = None
-            ) -> None:
+    ) -> None:
         if (pattern is not None and
-                (time_pattern is not None or value_pattern is not None)):
+                (key_pattern is not None or value_pattern is not None)):
             raise ValueError(
                 "pattern and time_pattern or value_pattern "
                 "cannot both be specified"
-                )
-        if time_pattern is None and value_pattern is None and pattern is None:
+            )
+        if key_pattern is None and value_pattern is None and pattern is None:
             raise ValueError(
                 "You must specify pattern or time_pattern "
                 "and value_pattern"
-                )
+            )
 
         if pattern is not None:
-            timeseries = math_pattern_to_values(self.data, pattern)
-            timeseries = pd.DataFrame.from_records(
-                {
-                    "time": timeseries.keys(),
-                    "value": timeseries.values()
-                }
-            )
-            view = TimeseriesView(
-                name, timeseries,
-                time_col="time",
-                value_col="value"
-                )
+            dictionary = math_pattern_to_values(self.data, pattern)
+            view = DictionaryView(name, dictionary)
             self.add_view(name, view)
         else:
-            times = math_pattern_to_values(self.data, time_pattern).values()
+            keys = math_pattern_to_values(self.data, key_pattern).values()
             values = math_pattern_to_values(self.data, value_pattern).values()
-            timeseries = pd.DataFrame.from_records(
-                {
-                    "time": times,
-                    "value": values
-                }
-            )
-            view = TimeseriesView(
-                name, timeseries,
-                time_col="time",
-                value_col="value"
+            if len(keys) != len(values):
+                raise IndexError(
+                    f"Keys and values found are not the same length: "
+                    f"{len(keys)},{len(values)}"
                 )
+
+            dictionary = {key: value for key, value in zip(keys, values)}
+            view = DictionaryView(name, dictionary)
             self.add_view(name, view)
