@@ -3,9 +3,10 @@ from typing import Any, Optional
 
 import pandas as pd
 
-from utils import remove_lists_from_json, math_pattern_to_values
-from datafile import DataFile
-from datastudy import DataStudy
+from .utils import remove_lists_from_json, math_pattern_to_values
+from .datafile import DataFile
+from .datastudy import DataStudy
+from .views.view import PointView, ListView, TimeseriesView
 
 
 class JSONDataFile(DataFile):
@@ -32,8 +33,8 @@ class JSONDataFile(DataFile):
         temp = self.data
         for field in path.split("/"):
             temp = temp[field]
-
-        self.add_view(name, lambda: temp)
+        view = PointView(name, temp)
+        self.add_view(name, view)
 
     def make_list_view(
             self,
@@ -50,7 +51,8 @@ class JSONDataFile(DataFile):
             # case 1, there is at least one * in the path
             if "*" in path:
                 matching_elements = math_pattern_to_values(self.data, path)
-                self.add_view(name, lambda: list(matching_elements.values()))
+                view = ListView(name, list(matching_elements.values()))
+                self.add_view(name, view)
                 return
             temp = self.data
             for field in path.split("/"):
@@ -58,39 +60,53 @@ class JSONDataFile(DataFile):
                     temp = temp[field]
 
             # case 2, path is a path that leads to a dict
-            self.add_view(name, lambda: temp.values())
+            view = ListView(name, list(temp.values()))
+            self.add_view(name, view)
             return
 
-    def make_timeseries_view(self, name: str, *, pattern: str= None,
-                             time_pattern: str= None,
-                             value_pattern: str= None) -> None:
+    def make_timeseries_view(
+            self, name: str, *, pattern: str = None,
+            time_pattern: str = None,
+            value_pattern: str = None
+            ) -> None:
         if (pattern is not None and
                 (time_pattern is not None or value_pattern is not None)):
-            raise ValueError("pattern and time_pattern or value_pattern "
-                             "cannot both be specified")
+            raise ValueError(
+                "pattern and time_pattern or value_pattern "
+                "cannot both be specified"
+                )
         if time_pattern is None and value_pattern is None and pattern is None:
-            raise ValueError("You must specify pattern or time_pattern "
-                             "and value_pattern")
+            raise ValueError(
+                "You must specify pattern or time_pattern "
+                "and value_pattern"
+                )
 
         if pattern is not None:
             timeseries = math_pattern_to_values(self.data, pattern)
-
-            self.add_view(
-                name, lambda: pd.DataFrame.from_records(
-                    {
-                        "time": timeseries.keys(),
-                        "value": timeseries.values()
-                    }
-                )
+            timeseries = pd.DataFrame.from_records(
+                {
+                    "time": timeseries.keys(),
+                    "value": timeseries.values()
+                }
             )
+            view = TimeseriesView(
+                name, timeseries,
+                time_col="time",
+                value_col="value"
+                )
+            self.add_view(name, view)
         else:
             times = math_pattern_to_values(self.data, time_pattern).values()
             values = math_pattern_to_values(self.data, value_pattern).values()
-            self.add_view(
-                name, lambda: pd.DataFrame.from_records(
-                    {
-                        "time": times,
-                        "value": values
-                    }
-                )
+            timeseries = pd.DataFrame.from_records(
+                {
+                    "time": times,
+                    "value": values
+                }
             )
+            view = TimeseriesView(
+                name, timeseries,
+                time_col="time",
+                value_col="value"
+                )
+            self.add_view(name, view)

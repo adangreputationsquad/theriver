@@ -1,4 +1,4 @@
-from typing import Callable
+from .views.view import View
 
 
 def smallest_index(names: list[str]) -> int:
@@ -14,7 +14,7 @@ class DataStudy:
         self._name = name
         self._desc = desc
         self._datas: dict[str, DataStudy] = dict()
-        self._views = dict()
+        self._views: dict[str, View] = dict()
 
     def __repr__(self) -> str:
         return (f"DataStudy("
@@ -24,27 +24,31 @@ class DataStudy:
 
     def add_csv(
             self, path, name: str = "", desc: str = "", *args, **kwargs
-    ) -> None:
-        from framedatafile import FrameDataFile
+    ):
+        from .framedatafile import FrameDataFile
 
         if not name:
             name = f"data_frame_{smallest_index(list(self.datas.keys()))}"
-        self.datas[name] = FrameDataFile.from_csv(
+        out = FrameDataFile.from_csv(
             self, path, name=name, desc=desc,
             *args, **kwargs
         )
+        self.datas[name] = out
+        return out
 
-    def add_json(self, path: str, name: str = "", desc: str = "") -> None:
-        from jsondatafile import JSONDataFile
+    def add_json(self, path: str, name: str = "", desc: str = ""):
+        from .jsondatafile import JSONDataFile
 
         if not name:
             name = f"data_json_{smallest_index(list(self.datas.keys()))}"
-        self.datas[name] = JSONDataFile.from_json(self, path, name, desc)
+        out = JSONDataFile.from_json(self, path, name, desc)
+        self.datas[name] = out
+        return out
 
     @property
     def datas(self):
         return self._datas
 
     @property
-    def views(self) -> dict[str, Callable]:
+    def views(self) -> dict[str, View]:
         return self._views

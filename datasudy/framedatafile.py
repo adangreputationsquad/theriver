@@ -1,7 +1,8 @@
 from typing import Any
 import pandas as pd
-from datafile import DataFile
-from datastudy import DataStudy
+from .datafile import DataFile
+from .datastudy import DataStudy
+from .views.view import PointView, ListView, TimeseriesView
 
 
 class FrameDataFile(DataFile):
@@ -35,7 +36,8 @@ class FrameDataFile(DataFile):
         return instance
 
     def make_point_view(self, name: str, col: str, row: int) -> None:
-        self.add_view(name, lambda: self._data[col].loc[row])
+        view = PointView(name, self.data[col].loc[row])
+        self.add_view(name, view)
 
     def make_list_view(self, name: str,
                        col: str = None,
@@ -47,14 +49,18 @@ class FrameDataFile(DataFile):
             raise ValueError("only row, col or elems can be specified")
 
         if row is not None:
-            self.add_view(name, lambda: self.data.loc[row].tolist())
+            view = ListView(name, self.data.loc[row].tolist())
+            self.add_view(name, view)
         elif col is not None:
-            self.add_view(name, lambda: self.data[col].tolist())
+            view = ListView(name, self.data[col].tolist())
+            self.add_view(name, view)
         else:
-            self.add_view(name, lambda: [self.data[elem[0]].loc[elem[1]]
+            view = ListView(name, [self.data[elem[0]].loc[elem[1]]
                                          for elem in elems])
+            self.add_view(name, view)
 
     def make_timeseries_view(self, name: str,
                              time_col: str,
                              value_col: str) -> None:
-        return self.add_view(name, lambda: self.data[[time_col, value_col]])
+        view = TimeseriesView(name, self.data, time_col, value_col)
+        return self.add_view(name, view)

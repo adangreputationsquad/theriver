@@ -1,7 +1,8 @@
 from typing import Any
 from abc import ABC, abstractmethod
 
-from datastudy import DataStudy
+from .datastudy import DataStudy
+from .views.view import View
 
 
 class DataFile(ABC):
@@ -35,9 +36,9 @@ class DataFile(ABC):
         if name in self._study.views.keys():
             raise ValueError(f"View {name} already exists")
 
-    def add_view(self, name, func) -> None:
+    def add_view(self, name, view: View) -> None:
         self.assert_view_name(name)
-        self._study.views[name] = func
+        self._study.views[name] = view
 
     @abstractmethod
     def make_point_view(self, *args) -> None:
