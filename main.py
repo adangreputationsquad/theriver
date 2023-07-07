@@ -22,4 +22,8 @@ if __name__ == '__main__':
     csv_data.make_point_view("test_viz_3", col="Language", row=1,
                              plot=PLOT.POINT.NAME_VALUE)
 
+    json_data.make_dict_view(name="test_viz_4",
+                             key_pattern="pages_per_visit/*/date",
+                             value_pattern="pages_per_visit/*/value",
+                             plot=PLOT.DICT.ALL_VALUES)
     ds.render()

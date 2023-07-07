@@ -3,6 +3,7 @@ from dash import Dash, html
 from study.views.view import View
 from dataviz.plot_types import PLOT
 
+
 class DataStudyRenderer:
 
     def __init__(self, title, desc):
@@ -32,15 +33,28 @@ class DataStudyRenderer:
         )
 
     def add_plot(self, view: View, plot_type: PLOT):
-        from .src.components import point_name_value, point_value
+        from .src import components as cp
         from study.views.view import PointView, ListView, DictionaryView
-        # TODO check plot type match with view
+
+        for plot, view_type in [(PLOT.POINT, PointView),
+                                (PLOT.LIST, ListView),
+                                (PLOT.DICT, DictionaryView)]:
+            if (isinstance(plot_type, plot) and
+                    not isinstance(view, view_type)):
+                raise AssertionError(
+                    f"plot_type does not match with view type"
+                    f"{plot_type}, {view.__class__.__name__}"
+                )
 
         match plot_type:
             case PLOT.POINT.NAME_VALUE:
-                point_name_value.add(self, view)
+                cp.point_name_value.add(self, view)
                 return
             case PLOT.POINT.VALUE:
-                point_value.add(self, view)
+                cp.point_value.add(self, view)
                 return
+            case PLOT.DICT.ALL_VALUES | PLOT.LIST.ALL_VALUES:
+                cp.all_values.add(self, view)
+                return
+
         raise NotImplementedError()
