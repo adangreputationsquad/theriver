@@ -24,3 +24,5 @@ if __name__ == '__main__':
         value_pattern="pages_per_visit/*/value"
     )
 
+    json_data.make_point_view("test_viz", "pages_per_visit/0/date")
+    ds.render()

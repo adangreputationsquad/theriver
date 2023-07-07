@@ -1,4 +1,5 @@
-from .views.view import View
+from dataviz.dataviz import DataStudyRenderer
+from .views.view import View, PointView
 
 
 def smallest_index(names: list[str]) -> int:
@@ -15,6 +16,7 @@ class DataStudy:
         self._desc = desc
         self._datas: dict[str, DataStudy] = dict()
         self._views: dict[str, View] = dict()
+        self._renderer = DataStudyRenderer(name, desc)
 
     def __repr__(self) -> str:
         return (f"DataStudy("
@@ -52,3 +54,15 @@ class DataStudy:
     @property
     def views(self) -> dict[str, View]:
         return self._views
+
+    def render(self) -> None:
+        self.update()
+        self._renderer.run()
+
+    def update(self) -> None:
+        from dataviz.src.components import point
+        for view in self._views.values():
+            if isinstance(view, PointView):
+                self._renderer.plots.append(
+                    point.add(self._renderer, view)
+                )
