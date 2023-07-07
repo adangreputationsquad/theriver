@@ -46,3 +46,7 @@ class DataFile(ABC):
     @abstractmethod
     def make_list_view(self, *args) -> None:
         pass
+
+    @abstractmethod
+    def make_timeseries_view(self, *args) -> None:
+        pass

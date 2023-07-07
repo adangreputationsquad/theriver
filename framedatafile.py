@@ -53,3 +53,8 @@ class FrameDataFile(DataFile):
         else:
             self.add_view(name, lambda: [self.data[elem[0]].loc[elem[1]]
                                          for elem in elems])
+
+    def make_timeseries_view(self, name: str,
+                             time_col: str,
+                             value_col: str) -> None:
+        return self.add_view(name, lambda: self.data[[time_col, value_col]])

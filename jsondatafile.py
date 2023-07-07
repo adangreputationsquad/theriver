@@ -1,6 +1,9 @@
 import json
 from typing import Any, Optional
-from utils import remove_lists_from_json, get_matching_elements
+
+import pandas as pd
+
+from utils import remove_lists_from_json, math_pattern_to_values
 from datafile import DataFile
 from datastudy import DataStudy
 
@@ -46,7 +49,7 @@ class JSONDataFile(DataFile):
         if path is not None:
             # case 1, there is at least one * in the path
             if "*" in path:
-                matching_elements = get_matching_elements(self.data, path)
+                matching_elements = math_pattern_to_values(self.data, path)
                 self.add_view(name, lambda: list(matching_elements.values()))
                 return
             temp = self.data
@@ -57,3 +60,37 @@ class JSONDataFile(DataFile):
             # case 2, path is a path that leads to a dict
             self.add_view(name, lambda: temp.values())
             return
+
+    def make_timeseries_view(self, name: str, *, pattern: str= None,
+                             time_pattern: str= None,
+                             value_pattern: str= None) -> None:
+        if (pattern is not None and
+                (time_pattern is not None or value_pattern is not None)):
+            raise ValueError("pattern and time_pattern or value_pattern "
+                             "cannot both be specified")
+        if time_pattern is None and value_pattern is None and pattern is None:
+            raise ValueError("You must specify pattern or time_pattern "
+                             "and value_pattern")
+
+        if pattern is not None:
+            timeseries = math_pattern_to_values(self.data, pattern)
+
+            self.add_view(
+                name, lambda: pd.DataFrame.from_records(
+                    {
+                        "time": timeseries.keys(),
+                        "value": timeseries.values()
+                    }
+                )
+            )
+        else:
+            times = math_pattern_to_values(self.data, time_pattern).values()
+            values = math_pattern_to_values(self.data, value_pattern).values()
+            self.add_view(
+                name, lambda: pd.DataFrame.from_records(
+                    {
+                        "time": times,
+                        "value": values
+                    }
+                )
+            )
