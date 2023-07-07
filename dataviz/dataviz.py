@@ -1,7 +1,7 @@
-import pandas as pd
 from dash import Dash, html
-from dash_bootstrap_components.themes import BOOTSTRAP
 
+from study.views.view import View
+from dataviz.plot_types import PLOT
 
 class DataStudyRenderer:
 
@@ -16,6 +16,8 @@ class DataStudyRenderer:
         self.app.run()
 
     def create_layout(self) -> html.Div:
+        from .src.components import point_name_value
+
         children = [
             html.H1(self.app.title),
             html.Hr(),
@@ -29,3 +31,16 @@ class DataStudyRenderer:
             children=children,
         )
 
+    def add_plot(self, view: View, plot_type: PLOT):
+        from .src.components import point_name_value, point_value
+        from study.views.view import PointView, ListView, DictionaryView
+        # TODO check plot type match with view
+
+        match plot_type:
+            case PLOT.POINT.NAME_VALUE:
+                point_name_value.add(self, view)
+                return
+            case PLOT.POINT.VALUE:
+                point_value.add(self, view)
+                return
+        raise NotImplementedError()

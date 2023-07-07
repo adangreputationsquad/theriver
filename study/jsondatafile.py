@@ -1,6 +1,7 @@
 import json
 from typing import Any, Optional
 
+from dataviz.plot_types import PLOT
 from .utils import remove_lists_from_json, math_pattern_to_values
 from .datafile import DataFile
 from .datastudy import DataStudy
@@ -27,18 +28,27 @@ class JSONDataFile(DataFile):
             data = remove_lists_from_json(json.load(f))
         return JSONDataFile(study, data, name, desc)
 
-    def make_point_view(self, name: str, path: str) -> None:
+    def make_point_view(
+            self,
+            name: str,
+            path: str,
+            plot: Optional[PLOT.POINT] = None,
+    ) -> None:
         temp = self.data
         for field in path.split("/"):
             temp = temp[field]
         view = PointView(name, temp)
-        self.add_view(name, view)
+        self.add_view(view)
+
+        if plot is not None:
+            self.add_plot(view, plot)
 
     def make_list_view(
             self,
             name: str,
             path: Optional[str] = None,
-            paths: Optional[list[str]] = None
+            paths: Optional[list[str]] = None,
+            plot: Optional[PLOT.LIST] = None
     ) -> None:
         if path is None and paths is None:
             raise ValueError("path or paths must be specified")
@@ -50,7 +60,10 @@ class JSONDataFile(DataFile):
             if "*" in path:
                 matching_elements = math_pattern_to_values(self.data, path)
                 view = ListView(name, list(matching_elements.values()))
-                self.add_view(name, view)
+                self.add_view(view)
+
+                if plot is not None:
+                    self.add_plot(view, plot)
                 return
             temp = self.data
             for field in path.split("/"):
@@ -59,13 +72,17 @@ class JSONDataFile(DataFile):
 
             # case 2, path is a path that leads to a dict
             view = ListView(name, list(temp.values()))
-            self.add_view(name, view)
+            self.add_view(view)
+
+            if plot is not None:
+                self.add_plot(view, plot)
             return
 
     def make_dict_view(
             self, name: str, *, pattern: str = None,
             key_pattern: str = None,
-            value_pattern: str = None
+            value_pattern: str = None,
+            plot: Optional[PLOT.DICT] = None
     ) -> None:
         if (pattern is not None and
                 (key_pattern is not None or value_pattern is not None)):
@@ -82,7 +99,7 @@ class JSONDataFile(DataFile):
         if pattern is not None:
             dictionary = math_pattern_to_values(self.data, pattern)
             view = DictionaryView(name, dictionary)
-            self.add_view(name, view)
+            self.add_view(view)
         else:
             keys = math_pattern_to_values(self.data, key_pattern).values()
             values = math_pattern_to_values(self.data, value_pattern).values()
@@ -94,4 +111,7 @@ class JSONDataFile(DataFile):
 
             dictionary = {key: value for key, value in zip(keys, values)}
             view = DictionaryView(name, dictionary)
-            self.add_view(name, view)
+            self.add_view(view)
+
+        if plot is not None:
+            self.add_plot(view, plot)

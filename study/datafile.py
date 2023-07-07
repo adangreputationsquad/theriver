@@ -1,15 +1,17 @@
-from typing import Any
+from typing import Any, Optional
 from abc import ABC, abstractmethod
-
-from .datastudy import DataStudy
-from .views.view import View
+from study.datastudy import DataStudy
+from study.views.view import View
+from dataviz.plot_types import PLOT
 
 
 class DataFile(ABC):
 
     @abstractmethod
-    def __init__(self, study: DataStudy, data: Any, name="",
-                 desc="") -> None:
+    def __init__(
+            self, study: DataStudy, data: Any, name="",
+            desc=""
+    ) -> None:
         self._study = study
         self._data = data
         self._name = name
@@ -36,9 +38,12 @@ class DataFile(ABC):
         if name in self._study.views.keys():
             raise ValueError(f"View {name} already exists")
 
-    def add_view(self, name, view: View) -> None:
-        self.assert_view_name(name)
-        self._study.views[name] = view
+    def add_view(self, view: View) -> None:
+        self.assert_view_name(view.name)
+        self._study.views[view.name] = view
+
+    def add_plot(self, view, plot_type: PLOT):
+        self._study.add_plot(view, plot_type)
 
     @abstractmethod
     def make_point_view(self, *args) -> None:

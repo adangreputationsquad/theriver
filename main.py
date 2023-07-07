@@ -1,5 +1,5 @@
-from datasudy.datastudy import DataStudy
-
+from study.datastudy import DataStudy
+from dataviz.plot_types import PLOT
 if __name__ == '__main__':
     ds = DataStudy("Test data study", "my data study")
     csv_data = ds.add_csv(
@@ -15,14 +15,11 @@ if __name__ == '__main__':
         "This one is a json"
     )
 
-    csv_data.make_timeseries_view(
-        "test", time_col="Date", value_col="Mobile Reach"
-    )
-    json_data.make_timeseries_view(
-        "test_2",
-        time_pattern="pages_per_visit/*/date",
-        value_pattern="pages_per_visit/*/value"
-    )
+    json_data.make_point_view("test_viz", "pages_per_visit/0/date",
+                              plot=PLOT.POINT.NAME_VALUE)
+    json_data.make_point_view("test_viz_2", "pages_per_visit/1/date",
+                              plot=PLOT.POINT.VALUE)
+    csv_data.make_point_view("test_viz_3", col="Language", row=1,
+                             plot=PLOT.POINT.NAME_VALUE)
 
-    json_data.make_point_view("test_viz", "pages_per_visit/0/date")
     ds.render()
