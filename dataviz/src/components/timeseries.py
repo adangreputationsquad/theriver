@@ -1,7 +1,7 @@
 import pandas as pd
 from dash import html, dcc
 
-from study.views.view import PointView
+from datafiles.views.view import PointView
 from dataviz.dataviz import DataStudyRenderer
 from dateutil import parser
 

@@ -1,11 +1,13 @@
 from dash import Dash, html
 
-from study.views.view import View, DfView
+from datafiles.views.view import View, DfView
 from dataviz.plot_types import PLOT
 
 
 class DataStudyRenderer:
-
+    """
+    We use this class to render a data study in a dashboard
+    """
     def __init__(self, title, desc):
         self.app = Dash(external_stylesheets=["assets/style.css"])
         self.app.title = title
@@ -17,7 +19,6 @@ class DataStudyRenderer:
         self.app.run()
 
     def create_layout(self) -> html.Div:
-        from .src.components import point_name_value
 
         children = [
             html.H1(self.app.title),
@@ -34,7 +35,7 @@ class DataStudyRenderer:
 
     def add_plot(self, view: View, plot_type: PLOT, *args, **kwargs):
         from .src import components as cp
-        from study.views.view import PointView, ListView, DictView
+        from datafiles.views.view import PointView, ListView, DictView
 
         for plot, view_type in [(PLOT.POINT, PointView),
                                 (PLOT.LIST, ListView),
@@ -49,19 +50,21 @@ class DataStudyRenderer:
 
         match plot_type:
             case PLOT.POINT.NAME_VALUE:
-                cp.point_name_value.add(self, view, *args, **kwargs)
+                cp.point_name_value.add(self, view,  # type: ignore
+                                        *args, **kwargs)
                 return
             case PLOT.POINT.VALUE:
-                cp.point_value.add(self, view, *args, **kwargs)
+                cp.point_value.add(self, view, *args, **kwargs)  # type: ignore
                 return
             case PLOT.DICT.ALL_VALUES | PLOT.LIST.ALL_VALUES:
-                cp.all_values.add(self, view, *args, **kwargs)
+                cp.all_values.add(self, view, *args, **kwargs)  # type: ignore
                 return
             case PLOT.DICT.ALL_KEYS_VALUES:
-                cp.all_keys_values.add(self, view, *args, **kwargs)
+                cp.all_keys_values.add(self, view,  # type: ignore
+                                       *args, **kwargs)
                 return
             case PLOT.DICT.TIMESERIES | PLOT.DF.TIMESERIES:
-                cp.timeseries.add(self, view, *args, **kwargs)
+                cp.timeseries.add(self, view, *args, **kwargs)  # type: ignore
                 return
 
         raise NotImplementedError(plot_type)

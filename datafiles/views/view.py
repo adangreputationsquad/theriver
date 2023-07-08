@@ -5,7 +5,11 @@ import pandas as pd
 
 
 class View(ABC):
-
+    """
+    View object, we use it to get data from the datafiles and giving it the
+    structure we want (point, list, dict, dataframe).
+    Each view can lead to different plot
+    """
     def __init__(self, name: str, data: Any) -> None:
         self.name = name
         self.data = data

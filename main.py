@@ -1,8 +1,8 @@
-from study.datastudy import DataStudy
+from datastudy import DataStudy
 from dataviz.plot_types import PLOT
 
 if __name__ == '__main__':
-    ds = DataStudy("Test data study", "my data study")
+    ds = DataStudy("Test data datafiles", "my data datafiles")
     csv_data = ds.add_csv(
         "data/example_data.csv",
         "My first data",

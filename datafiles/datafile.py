@@ -1,7 +1,7 @@
 from typing import Any
 from abc import ABC, abstractmethod
-from study.datastudy import DataStudy
-from study.views.view import View, PointView, ListView, DictView, DfView
+from datastudy_interface import IDataStudy
+from datafiles.views.view import View, PointView, ListView, DictView, DfView
 from dataviz.plot_types import PLOT
 
 
@@ -9,7 +9,7 @@ class DataFile(ABC):
 
     @abstractmethod
     def __init__(
-            self, study: DataStudy, data: Any, name="",
+            self, study: IDataStudy, data: Any, name="",
             desc=""
     ) -> None:
         self._study = study
@@ -38,11 +38,21 @@ class DataFile(ABC):
         if name in self._study.views.keys():
             raise ValueError(f"View {name} already exists")
 
-    def add_view(self, view: View) -> None:
+    def _add_view(self, view: View) -> None:
+        """
+        Add a view to the study's list of view
+        :param view: View
+        """
         self.assert_view_name(view.name)
         self._study.views[view.name] = view
 
     def add_plot(self, view, plot_type: PLOT):
+        """
+        Add a plot to the study's list of plots that will be displayed in the
+        dashboard
+        :param view: View
+        :param plot_type: Type of the plot
+        """
         self._study.add_plot(view, plot_type)
 
     @abstractmethod
@@ -60,6 +70,3 @@ class DataFile(ABC):
     @abstractmethod
     def make_df_view(self, *args) -> DfView:
         pass
-
-    def make_plot(self, view: View, plot_type: PLOT):
-        self._study.add_plot(view, plot_type)

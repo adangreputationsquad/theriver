@@ -1,6 +1,6 @@
 from dash import html
 
-from study.views.view import PointView
+from datafiles.views.view import PointView
 from dataviz.dataviz import DataStudyRenderer
 
 
