@@ -19,6 +19,7 @@ class DICT_ENUM(Enum):
 
 class DF_ENUM(Enum):
     TIMESERIES = "timeseries"
+    SCATTER_PLOT = "scatter_plot"
 
 
 class PLOT:

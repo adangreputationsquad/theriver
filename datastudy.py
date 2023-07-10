@@ -1,3 +1,5 @@
+import os.path
+
 from datafiles.datafile import DataFile
 from datastudy_interface import IDataStudy
 from dataviz.dataviz import DataStudyRenderer
@@ -52,7 +54,7 @@ class DataStudy(IDataStudy):
         from datafiles.framedatafile import FrameDataFile
 
         if name == "":
-            name = f"data_frame_{_smallest_index(list(self.datas.keys()))}"
+            name = "data_frame_" + os.path.basename(path)
         out = FrameDataFile.from_csv(
             self, path, name=name, desc=desc,
             *args, **kwargs
@@ -71,7 +73,7 @@ class DataStudy(IDataStudy):
         :return: JSONDataFile object holding the data
         """
         if name == "":
-            name = f"data_json_{_smallest_index(list(self.datas.keys()))}"
+            name = f"data_json_" + os.path.basename(path)
         out = JSONDataFile.from_json(self, path, name, desc)
         self.datas[name] = out
         return out
@@ -90,15 +92,18 @@ class DataStudy(IDataStudy):
         """
         return self._views
 
-    def render(self) -> None:
+    def render(self, debug: bool = False) -> None:
         """
         Render the DataStudy on a local dashboard
         """
-        self._renderer.run()
+        self._renderer.run(debug)
 
     def add_plot(self, view: View, plot_type: PLOT, *args, **kwargs):
         """
         Add a plot to the DataStudy
+
+        List of available plots here: https://plotly.com/python/basic-charts/
+
         :param view: View of the data to plot
         :param plot_type: Type of plot, from the PLOT enum
         :param args: args for the plot

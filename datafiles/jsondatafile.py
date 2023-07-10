@@ -184,7 +184,7 @@ class JSONDataFile(DataFile):
             self, name,
             pattern: Optional[str] = None,
             patterns: Optional[list[str]] = None,
-            cols: Optional[list[str]] = None,
+            cols_name: Optional[list[str]] = None,
             plot: Optional[PLOT.DF] = None,
     ) -> DfView:
         """
@@ -198,7 +198,7 @@ class JSONDataFile(DataFile):
         and '*' as a wildcard to match multiple values. Each pattern will match
         values and stored them in different columns. Keys matched with '*' will
         be discarded.
-        :param cols: Name of the columns, must be of length 2 if pattern is
+        :param cols_name: Name of the columns, must be of length 2 if pattern is
         specified, must be of length len(patterns) if patterns is specified.
         :param plot: If left to None, make_df_view will not add the df as
         plot to the study, if set to a PLOT.DF, will add the df to the
@@ -213,8 +213,8 @@ class JSONDataFile(DataFile):
 
         if pattern is not None:
             dictionary = match_pattern_to_values(self.data, pattern)
-            if cols is not None:
-                col_1, col_2 = cols[0], cols[1]
+            if cols_name is not None:
+                col_1, col_2 = cols_name[0], cols_name[1]
             else:
                 col_1, col_2 = "key", "value"
             df = pd.DataFrame.from_records(
@@ -230,16 +230,15 @@ class JSONDataFile(DataFile):
             return view
         else:
             patterns = [] if patterns is None else patterns
-            cols = ([f"col_{i}" for i in range(len(patterns))]
-                    if cols is None else cols)
-            if len(patterns) != len(cols):
+            cols_name = patterns
+            if len(patterns) != len(cols_name):
                 raise IndexError(
                     f"Keys and values found are not the same length: "
-                    f"{len(patterns)},{len(cols)}"
+                    f"{len(patterns)},{len(cols_name)}"
                 )
             dictionary = {
                 col: list(match_pattern_to_values(self.data, pattern).values())
-                for col, pattern in zip(cols, patterns)
+                for col, pattern in zip(cols_name, patterns)
             }
             df = pd.DataFrame.from_records(dictionary)
             view = DfView(name, df)

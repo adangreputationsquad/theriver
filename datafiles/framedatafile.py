@@ -35,11 +35,13 @@ class FrameDataFile(DataFile):
 
     @staticmethod
     def from_csv(study: IDataStudy,
+                 path: str,
                  name: str = "",
                  desc: str = "",
                  *args, **kwargs) -> "FrameDataFile":
         """
         Initialize a FrameDataFile from a csv
+        :param path: Path to the csv
         :param study: Parent DataStudy
         :param name: Name for the file
         :param desc: Description for the file
@@ -51,7 +53,7 @@ class FrameDataFile(DataFile):
             study=study,
             name=name,
             desc=desc,
-            data=pd.read_csv(*args, **kwargs),
+            data=pd.read_csv(path, *args, **kwargs),
         )
         return instance
 
