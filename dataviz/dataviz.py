@@ -1,3 +1,5 @@
+import os
+
 from dash import Dash, html
 from datafiles.views.view import View, DfView
 from dataviz.plot_types import PLOT
@@ -7,15 +9,11 @@ import dash_draggable
 class DataStudyRenderer:
     """
     We use this class to render a data study in a dashboard
+    the quick brown fox jumps over the lazy dog
     """
 
     def __init__(self, title, desc):
-        self.app = Dash(
-            external_stylesheets=["assets/style.css"],
-            external_scripts=[
-                "https://cdnjs.cloudflare.com/ajax/libs/dragula/3"
-                ".7.2/dragula.min.js"],
-        )
+        self.app = Dash(__name__)
         self.app.title = title
         self.desc = desc
         self.plots: list[html.Div] = []
@@ -31,6 +29,7 @@ class DataStudyRenderer:
             html.P(self.desc),
             html.Hr(),
             dash_draggable.GridLayout(
+                className="draggable",
                 id='draggable',
                 children=self.plots
             ),
@@ -81,6 +80,12 @@ class DataStudyRenderer:
                 return
             case PLOT.DF.SCATTER_PLOT:
                 cp.scatter_plot.add(self, view, *args, **kwargs)  # type: ignore
+                return
+            case PLOT.DF.LINE_CHARTS:
+                cp.line_charts.add(self, view, *args, **kwargs)  # type: ignore
+                return
+            case PLOT.DF.BAR_CHARTS:
+                cp.bar_charts.add(self, view, *args, **kwargs)  # type: ignore
                 return
 
         raise NotImplementedError(plot_type)

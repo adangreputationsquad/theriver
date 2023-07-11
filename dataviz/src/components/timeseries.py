@@ -1,16 +1,23 @@
 import pandas as pd
 from dash import html, dcc, Output, Input
+from plotly.graph_objs import Layout
 
 from datafiles.views.view import DfView, DictView
 from dataviz.dataviz import DataStudyRenderer
 from dateutil import parser
 import plotly.express as px
 
+layout = Layout(
+    paper_bgcolor='rgba(0,0,0,0)',
+    plot_bgcolor='rgba(0,0,0,0)'
+)
+
 
 def add(
         renderer: DataStudyRenderer, source: DfView | DictView,
         *args, **kwargs
 ):
+    # TODO: add multiple values for val_col
     val_col = kwargs.pop("val_col", None)
     time_col = kwargs.pop("time_col", None)
     if isinstance(source.data, dict):
@@ -36,7 +43,6 @@ def add(
     else:
         raise NotImplementedError()
 
-    print(nb_vars)
     layout = kwargs.pop("layout", {})
     fig = px.line(
         data_frame=data, x=time_col, y=val_col,
@@ -53,8 +59,9 @@ def add(
     dropdown = None
     if nb_vars > 1:
         dropdown = html.Div(
+            className="dropdown-button",
             children=[
-                html.B("Y (multiple): "),
+                html.B("Y (multiple) "),
                 dcc.Dropdown(
                     id=source.name + '_y-dropdown',
                     options=[{'label': col, 'value': col} for col
@@ -67,14 +74,16 @@ def add(
             style={
                 "display": "inline-flex",
                 'width': '49%',
-                "float": "left"
+                "float": "left",
+                "align-items": "center"
             }
         )
 
     renderer.plots.append(
         html.Div(
             children=[
-                dcc.Graph(figure=fig, id=source.name + "_graph"), dropdown
+                dcc.Graph(figure=fig, id=source.name + "_graph"),
+                dropdown
             ]
         )
     )
@@ -93,7 +102,10 @@ def add(
             )
 
             layout.update(
-                yaxis={'title': ', '.join(y_cols) if y_cols else "y"}
+                yaxis={'title': ', '.join(y_cols) if y_cols else "y"},
+                template='plotly_dark',
+                plot_bgcolor='rgba(0, 0, 0, 0)',
+                paper_bgcolor='rgba(0, 0, 0, 0)',
             )
 
             fig.update_layout(layout)

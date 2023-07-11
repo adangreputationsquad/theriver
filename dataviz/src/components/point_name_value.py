@@ -7,6 +7,7 @@ from dataviz.dataviz import DataStudyRenderer
 def add(renderer: DataStudyRenderer, source: PointView, *args, **kwargs):
     renderer.plots.append(
         html.Div(
+            className="plot",
             children=[
                 html.Div(
                     [

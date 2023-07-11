@@ -82,7 +82,7 @@ class FrameDataFile(DataFile):
 
     def make_point_view(
             self, name: str, col: str, row: int,
-            plot: Optional[PLOT.POINT] = None
+            plot: Optional[PLOT.POINT] = None, *args, **kwargs
             ) -> PointView:
         """
         Make a point view from the data
@@ -98,7 +98,7 @@ class FrameDataFile(DataFile):
         self._add_view(view)
 
         if plot is not None:
-            self.add_plot(view, plot)
+            self.add_plot(view, plot, *args, **kwargs)
         return view
 
     def make_list_view(
@@ -106,7 +106,8 @@ class FrameDataFile(DataFile):
             col: Optional[str] = None,
             row: Optional[int] = None,
             elems: list[Tuple[str, int]] = None,
-            plot: Optional[PLOT.LIST] = None
+            plot: Optional[PLOT.LIST] = None,
+            *args, **kwargs
     ) -> ListView:
         """
         Make a list view from the data
@@ -139,14 +140,15 @@ class FrameDataFile(DataFile):
             self._add_view(view)
 
         if plot is not None:
-            self.add_plot(view, plot)
+            self.add_plot(view, plot, *args, **kwargs)
         return view
 
     def make_dict_view(
             self, name: str,
             col_key: str,
             col_value: str,
-            plot: Optional[PLOT.LIST] = None
+            plot: Optional[PLOT.LIST] = None,
+            *args, **kwargs
     ) -> DictView:
         """
         Make a dict view from the data
@@ -166,14 +168,15 @@ class FrameDataFile(DataFile):
         self._add_view(view)
 
         if plot is not None:
-            self.add_plot(view, plot)
+            self.add_plot(view, plot, *args, **kwargs)
         return view
 
     def make_df_view(self,
                      name: str,
                      cols: list[str] | str,
                      rows: Optional[list[int]] = None,
-                     plot: Optional[PLOT.DF] = None
+                     plot: Optional[PLOT.DF] = None,
+                     *args, **kwargs
                      ) -> DfView:
         """
         Make a df view from the data
@@ -191,10 +194,11 @@ class FrameDataFile(DataFile):
         df = self.data[cols]
         if rows is not None:
             df = df.loc[rows]
+
         view = DfView(name, df)
         self._add_view(view)
 
         if plot is not None:
-            self.add_plot(view, plot)
+            self.add_plot(view, plot, *args, **kwargs)
 
         return view

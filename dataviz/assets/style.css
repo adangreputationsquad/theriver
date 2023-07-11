@@ -6,12 +6,30 @@ hr {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 10px;
+    background-color: #171F26;
 }
 
-.dropdown-button {
-    width: 100%;
-    margin-top: 5px;
+.div {
+    color:#171F26;
 }
+
+/* dropdown menu */
+.Select-control {
+    background-color: #171F26 !important;
+    color: white;
+  }
+
+
+
+.Select-menu-outer {
+    background-color: #171F26;
+    color: white;
+}
+
+.Select-value-label {
+    color: white !important;
+}
+
 
 .tabs-group {
     padding-top: 20px;
@@ -19,33 +37,12 @@ hr {
 
 .app-div {
     padding: 10px;
+    background-color: #171F26;
 }
 
 .data-table-div {
     margin: auto;
     padding: 10px;
-}
-
-.budget-label {
-    font-size: 20px;
-    font-weight: bold;
-}
-
-.budget-text {
-    font-size: 20px;
-}
-
-.budget-text-value {
-    font-size: 20px;
-    font-style: italic;
-}
-
-.budget-progress-bar {
-    height: 20px;
-}
-
-.budget-tooltip {
-    font-size: 18px;
 }
 
 .checklist {
@@ -59,3 +56,16 @@ hr {
         grid-template-columns: 1fr;
     }
 }
+
+body {
+  background-color: #171F26;
+  color: #BACBD9;
+}
+
+
+/* drag and drop -able*/
+.react-draggable {
+  background-color: #3B4E59;
+  border: 2px outset black;
+}
+

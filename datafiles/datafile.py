@@ -46,14 +46,14 @@ class DataFile(ABC):
         self.assert_view_name(view.name)
         self._study.views[view.name] = view
 
-    def add_plot(self, view, plot_type: PLOT):
+    def add_plot(self, view, plot_type: PLOT, *args, **kwargs):
         """
         Add a plot to the study's list of plots that will be displayed in the
         dashboard
         :param view: View
         :param plot_type: Type of the plot
         """
-        self._study.add_plot(view, plot_type)
+        self._study.add_plot(view, plot_type, *args, **kwargs)
 
     @abstractmethod
     def make_point_view(self, *args) -> PointView:

@@ -14,8 +14,14 @@ def add(renderer: DataStudyRenderer, source: PointView, *args, **kwargs):
         text.append(html.Br())
 
     renderer.plots.append(
-        html.Div(children=[html.Div([
-            html.B(source.name),
-            html.P(text)
-        ])])
+        html.Div(
+            className="plot",
+            children=[html.Div(
+                [
+                    html.B(source.name),
+                    html.P(text)
+                ],
+                className="plot"
+            )]
+        )
     )

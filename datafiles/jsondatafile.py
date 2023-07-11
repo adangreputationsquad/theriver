@@ -59,6 +59,7 @@ class JSONDataFile(DataFile):
             name: str,
             pattern: str,
             plot: Optional[PLOT.POINT] = None,
+            *args, **kwargs
     ) -> PointView:
         """
         Make a point view from the data
@@ -77,7 +78,7 @@ class JSONDataFile(DataFile):
         self._add_view(view)
 
         if plot is not None:
-            self.add_plot(view, plot)
+            self.add_plot(view, plot, *args, **kwargs)
         return view
 
     def make_list_view(
@@ -85,7 +86,8 @@ class JSONDataFile(DataFile):
             name: str,
             pattern: Optional[str] = None,
             patterns: Optional[list[str]] = None,
-            plot: Optional[PLOT.LIST] = None
+            plot: Optional[PLOT.LIST] = None,
+            *args, **kwargs
     ) -> ListView:
         """
         Make a list view from the data
@@ -123,14 +125,15 @@ class JSONDataFile(DataFile):
             self._add_view(view)
 
             if plot is not None:
-                self.add_plot(view, plot)
+                self.add_plot(view, plot, *args, **kwargs)
             return view
 
     def make_dict_view(
-            self, name: str, *, pattern: str = None,
+            self, name: str, pattern: str = None,
             key_pattern: str = None,
             value_pattern: str = None,
-            plot: Optional[PLOT.DICT] = None
+            plot: Optional[PLOT.DICT] = None,
+            *args, **kwargs
     ) -> DictView:
         """
         Make a dict view from the data
@@ -177,7 +180,7 @@ class JSONDataFile(DataFile):
             self._add_view(view)
 
         if plot is not None:
-            self.add_plot(view, plot)
+            self.add_plot(view, plot, *args, **kwargs)
         return view
 
     def make_df_view(
@@ -186,6 +189,7 @@ class JSONDataFile(DataFile):
             patterns: Optional[list[str]] = None,
             cols_name: Optional[list[str]] = None,
             plot: Optional[PLOT.DF] = None,
+            *args, **kwargs
     ) -> DfView:
         """
         Make a df view from the data
@@ -223,10 +227,11 @@ class JSONDataFile(DataFile):
                     col_2: list(dictionary.values())
                 }
             )
+
             view = DfView(name, df)
             self._add_view(view)
             if plot is not None:
-                self.add_plot(view, plot)
+                self.add_plot(view, plot, *args, **kwargs)
             return view
         else:
             patterns = [] if patterns is None else patterns
@@ -244,5 +249,5 @@ class JSONDataFile(DataFile):
             view = DfView(name, df)
             self._add_view(view)
             if plot is not None:
-                self.add_plot(view, plot)
+                self.add_plot(view, plot, *args, **kwargs)
             return view

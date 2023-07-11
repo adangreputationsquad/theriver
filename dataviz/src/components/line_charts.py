@@ -17,8 +17,6 @@ def add(renderer: DataStudyRenderer, source: DfView, *args, **kwargs):
     if isinstance(source.data, pd.DataFrame):
         data = source.data
         x_col = kwargs.pop("x_col", source.data.columns[0])
-        # TODO: add multiple values for y_col (y_cols)
-
         y_cols = [kwargs.pop("y_col", source.data.columns[1])]
     else:
         raise NotImplementedError()
@@ -52,7 +50,6 @@ def add(renderer: DataStudyRenderer, source: DfView, *args, **kwargs):
                     children=[
                         html.B("Y (multiple) "),
                         dcc.Dropdown(
-                            className="dropdown-button",
                             id=source.name + 'y-dropdown',
                             options=[{'label': col, 'value': col} for col
                                      in available_columns],
@@ -79,7 +76,7 @@ def add(renderer: DataStudyRenderer, source: DfView, *args, **kwargs):
     def update_graph(x_col, y_cols):
         layout = kwargs.pop("layout", {})
 
-        fig = px.scatter(
+        fig = px.line(
             data_frame=data, x=x_col, y=y_cols,
             title="Graph with Column Selection"
         )
