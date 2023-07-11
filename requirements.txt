@@ -3,3 +3,6 @@ numpy
 pytz
 dash
 dateutil
+plotly
+pdfkit
+wkhtmltopdf

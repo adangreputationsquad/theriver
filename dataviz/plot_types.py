@@ -1,27 +1,32 @@
-from enum import Enum
+from enum import Enum, auto
 
 
 class POINT_ENUM(Enum):
-    NAME_VALUE = "name_value"
-    VALUE = "value"
+    NAME_VALUE = auto()
+    VALUE = auto()
 
 
 class LIST_ENUM(Enum):
-    ALL_VALUES = "all_values"
+    ALL_VALUES = auto()
 
 
 class DICT_ENUM(Enum):
-    ALL_VALUES = "all_values"
-    ALL_KEYS = "all_keys"
-    ALL_KEYS_VALUES = "all_keys_values"
-    TIMESERIES = "timeseries"
+    ALL_VALUES = auto()
+    ALL_KEYS = auto()
+    ALL_KEYS_VALUES = auto()
+    TIMESERIES = auto()
+    PIE_CHARTS = auto()
+    MAP = auto()
 
 
 class DF_ENUM(Enum):
-    TIMESERIES = "timeseries"
-    SCATTER_PLOT = "scatter_plot"
-    LINE_CHARTS = "line_charts"
-    BAR_CHARTS = "bar_charts"
+    TIMESERIES = auto()
+    SCATTER_PLOT = auto()
+    LINE_CHARTS = auto()
+    BAR_CHARTS = auto()
+    PIE_CHARTS = auto()
+    BUBBLE_CHARTS = auto()
+    MAP = auto()
 
 
 class PLOT:

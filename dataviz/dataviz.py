@@ -1,6 +1,5 @@
-import os
-
-from dash import Dash, html
+import pdfkit
+from dash import Dash, html, Input, Output
 from datafiles.views.view import View, DfView
 from dataviz.plot_types import PLOT
 import dash_draggable
@@ -25,8 +24,14 @@ class DataStudyRenderer:
     def create_layout(self) -> html.Div:
 
         drag_canvas = [
+            html.Div(id="placeholder", style={"display": "none"}),
             html.H1(self.app.title),
-            html.P(self.desc),
+            html.Div(
+                children=[
+                    html.P(self.desc),
+                    html.Button("download", id="download"),
+                ]
+            ),
             html.Hr(),
             dash_draggable.GridLayout(
                 className="draggable",
@@ -35,6 +40,18 @@ class DataStudyRenderer:
             ),
             html.Hr(),
         ]
+
+        @self.app.callback(
+            Output("download", "style"),
+            Input("download", "n_clicks"),
+        )
+        def _download(n):
+            if n is not None:
+                success = pdfkit.from_url(
+                    "http://127.0.0.1:8050/", f'test.pdf'
+                )
+                print(success)
+            return {}
 
         return html.Div(
             className="app-div",
@@ -86,6 +103,16 @@ class DataStudyRenderer:
                 return
             case PLOT.DF.BAR_CHARTS:
                 cp.bar_charts.add(self, view, *args, **kwargs)  # type: ignore
+                return
+            case PLOT.DF.PIE_CHARTS | PLOT.DICT.PIE_CHARTS:
+                cp.pie_charts.add(self, view, *args, **kwargs)  # type: ignore
+                return
+            case PLOT.DF.BUBBLE_CHARTS:
+                cp.bubble_charts.add(self, view,  # type: ignore
+                                     *args, **kwargs)
+                return
+            case PLOT.DF.MAP | PLOT.DICT.MAP:
+                cp.map.add(self, view, *args, **kwargs)  # type: ignore
                 return
 
         raise NotImplementedError(plot_type)

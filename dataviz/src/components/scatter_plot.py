@@ -17,11 +17,12 @@ def add(renderer: DataStudyRenderer, source: DfView, *args, **kwargs):
     if isinstance(source.data, pd.DataFrame):
         data = source.data
         x_col = kwargs.pop("x_col", source.data.columns[0])
-        y_cols = kwargs.pop("y_cols", source.data.columns[1])
+        y_cols = kwargs.pop("y_cols", None)
 
         available_columns = data.columns if y_cols is None else y_cols
 
-        y_cols = [kwargs.pop("y_col", available_columns[1])]
+        if y_cols is None:
+            y_cols = [kwargs.pop("y_col", available_columns[1])]
     else:
         raise NotImplementedError()
 
@@ -39,7 +40,10 @@ def add(renderer: DataStudyRenderer, source: DfView, *args, **kwargs):
                             options=[{'label': col, 'value': col} for col
                                      in available_columns],
                             value=x_col,
-                            style={"width": "80%"}
+                            style={
+                                "width": "80%",
+                                "display": "inline-bock"
+                            }
                         )
                     ],
                     style={

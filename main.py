@@ -20,27 +20,36 @@ if __name__ == '__main__':
         desc="This one is a json"
     )
 
-    engagement = json_data.make_df_view(
-        name="test_json_to_df",
-        patterns=["pages_per_visit/*/value", "visits/*/value",
-                  "unique_visitors/*/value"],
-        cols_name=["pages_per_visit", "visits", "unique_visitors"],
-        plot=PLOT.DF.SCATTER_PLOT
+    countries_data = ds.add_json(
+        path=("/home/alexandre/Dropbox (Reputation Squad)/DATAPROJECTS/lib/"
+              "Similar43/ressources/example_data_2.json"),
+        name="countries",
+
     )
 
-    engagement_2 = json_data.make_df_view(
-        name="test_json_to_df_timeseries",
-        patterns=["pages_per_visit/*/value", "pages_per_visit/*/date",
-                  "unique_visitors/*/value"],
-        plot=PLOT.DF.TIMESERIES
+    countries_view = countries_data.make_dict_view(
+        name="countries_view",
+        key_pattern="top_country_shares/*/country",
+        value_pattern="top_country_shares/*/value",
     )
 
-    medals = csv_data.make_df_view(
-        name="test_bars",
-        cols=["Medal", "Country"],
-        group_by="Country",
-        plot=PLOT.DF.BAR_CHARTS,
-        x_col="Country",
+    # engagement = json_data.make_df_view(
+    #     name="test_json_to_df",
+    #     patterns=["pages_per_visit/*/value", "visits/*/value",
+    #               "unique_visitors/*/value"],
+    #     cols_name=["pages_per_visit", "visits", "unique_visitors"],
+    #     plot=PLOT.DF.SCATTER_PLOT
+    # )
+
+
+    total_traffic = countries_data.make_point_view(
+        name="total_traffic",
+        pattern="estimated_monthly_visits/2023-05-01"
     )
+    print(total_traffic.data)
+    countries_view.apply(lambda x: x * total_traffic.data)
+    print(countries_view.data)
+    ds.add_plot(countries_view, plot_type=PLOT.DICT.MAP)
 
     ds.render(debug=True)
+    print(ds._renderer.app.server.route())
