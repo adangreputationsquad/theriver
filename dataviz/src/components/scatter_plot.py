@@ -17,13 +17,14 @@ def add(renderer: DataStudyRenderer, source: DfView, *args, **kwargs):
     if isinstance(source.data, pd.DataFrame):
         data = source.data
         x_col = kwargs.pop("x_col", source.data.columns[0])
-        # TODO: add multiple values for y_col (y_cols)
+        y_cols = kwargs.pop("y_cols", source.data.columns[1])
 
-        y_cols = [kwargs.pop("y_col", source.data.columns[1])]
+        available_columns = data.columns if y_cols is None else y_cols
+
+        y_cols = [kwargs.pop("y_col", available_columns[1])]
     else:
         raise NotImplementedError()
 
-    available_columns = data.columns
     renderer.plots.append(
         html.Div(
             className="plot",

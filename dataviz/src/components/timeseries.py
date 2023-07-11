@@ -17,8 +17,8 @@ def add(
         renderer: DataStudyRenderer, source: DfView | DictView,
         *args, **kwargs
 ):
-    # TODO: add multiple values for val_col
     val_col = kwargs.pop("val_col", None)
+    val_cols = kwargs.pop("val_cols", None)
     time_col = kwargs.pop("time_col", None)
     if isinstance(source.data, dict):
         dates = [parser.parse(date_str) for date_str in source.data.keys()]
@@ -34,8 +34,9 @@ def add(
         data = source.data
         if time_col is None:
             time_col = detect_date_column(source.data)
-        val_cols = source.data.columns.to_list()
-        val_cols.remove(time_col)
+        if val_cols is None:
+            val_cols = source.data.columns.to_list()
+            val_cols.remove(time_col)
         val_col = val_cols[0]
         nb_vars = len(val_cols)
 
