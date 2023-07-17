@@ -41,15 +41,15 @@ if __name__ == '__main__':
     #     plot=PLOT.DF.SCATTER_PLOT
     # )
 
-
     total_traffic = countries_data.make_point_view(
         name="total_traffic",
         pattern="estimated_monthly_visits/2023-05-01"
     )
-    print(total_traffic.data)
-    countries_view.apply(lambda x: x * total_traffic.data)
-    print(countries_view.data)
-    ds.add_plot(countries_view, plot_type=PLOT.DICT.MAP)
+
+    weighted_countries = countries_view.apply(lambda x: x * total_traffic(),
+                                              name="weighted_countries")
+
+    ds.add_plot(weighted_countries, plot_type=PLOT.DICT.MAP)
 
     ds.render(debug=True)
-    print(ds._renderer.app.server.route())
+

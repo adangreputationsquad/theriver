@@ -1,7 +1,7 @@
 import json
 
 import pandas as pd
-from dash import html, dcc, Output, Input
+from dash import html, dcc
 from plotly.graph_objs import Layout
 
 from datafiles.views.view import DfView
@@ -44,8 +44,6 @@ def add(renderer: DataStudyRenderer, source: DfView, *args, **kwargs):
         ]
 
     layout = kwargs.pop("layout", {})
-    supported_regions = [region["properties"]["ISO_A3"] for region in
-                         countries_geojson["features"]]
 
     fig = go.Figure(
         go.Choroplethmapbox(

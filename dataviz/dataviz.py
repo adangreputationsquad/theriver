@@ -69,7 +69,7 @@ class DataStudyRenderer:
             if (isinstance(plot_type, plot) and
                     not isinstance(view, view_type)):
                 raise AssertionError(
-                    f"plot_type does not match with view type"
+                    f"plot_type does not match with view type "
                     f"{plot_type}, {view.__class__.__name__}"
                 )
 
