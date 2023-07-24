@@ -14,8 +14,8 @@ def add(renderer: DataStudyRenderer, source: PointView, *args, **kwargs):
         text.append(f'{key}: {val}')
         text.append(html.Br())
 
-    renderer.plots.append(
-        html.Div(
+    plot_id = renderer.next_id()
+    plot = html.Div(
             className="plot",
             children=[
                 html.Div(
@@ -26,4 +26,6 @@ def add(renderer: DataStudyRenderer, source: PointView, *args, **kwargs):
                     className="plot"
                 )]
         )
-    )
+
+
+    renderer.plots[plot_id] = plot

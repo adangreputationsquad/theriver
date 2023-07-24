@@ -29,15 +29,15 @@ def add(renderer: DataStudyRenderer, source: DfView, *args, **kwargs):
     else:
         raise NotImplementedError()
 
-    renderer.plots.append(
-        html.Div(
+    plot_id = renderer.next_id()
+    plot = html.Div(
             className="plot",
             children=[
                 html.Thead(plot_name),
                 dcc.Graph(id=source.name + "graph"),
             ]
         )
-    )
+    renderer.plots[plot_id] = plot
 
     @renderer.app.callback(
         Output(source.name + "graph", "figure"),
@@ -59,7 +59,7 @@ def add(renderer: DataStudyRenderer, source: DfView, *args, **kwargs):
                 _PULLED = clickData["points"][0]["pointNumber"]
                 value = clickData["points"][0]["value"]
                 pull[int(_PULLED)] = 0.1 + ((1 - value) * 0.3)
-        print(labels)
+
         fig = go.Figure(
             data=[go.Pie(
                 labels=labels,

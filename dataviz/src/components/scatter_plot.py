@@ -26,56 +26,56 @@ def add(renderer: DataStudyRenderer, source: DfView, *args, **kwargs):
     else:
         raise NotImplementedError()
 
-    renderer.plots.append(
-        html.Div(
-            className="plot",
-            children=[
-                html.Thead(plot_name),
-                dcc.Graph(id=source.name + "graph"),
-                html.Div(
-                    children=[
-                        html.B("X "),
-                        dcc.Dropdown(
-                            className="dropdown-button",
-                            id=source.name + 'x-dropdown',
-                            options=[{'label': col, 'value': col} for col
-                                     in available_columns],
-                            value=x_col,
-                            style={
-                                "width": "80%",
-                                "display": "inline-bock"
-                            }
-                        )
-                    ],
-                    style={
-                        "display": "inline-flex",
-                        'width': '49%',
-                        "float": "left",
-                        "align-items": "center"
-                    }
-                ),
-                html.Div(
-                    children=[
-                        html.B("Y (multiple) "),
-                        dcc.Dropdown(
-                            className="dropdown-button",
-                            id=source.name + 'y-dropdown',
-                            options=[{'label': col, 'value': col} for col
-                                     in available_columns],
-                            value=y_cols,
-                            multi=True,
-                            style={"width": "80%"}
-                        )
-                    ],
-                    style={
-                        "display": "inline-flex",
-                        'width': '49%',
-                        "float": "right",
-                        "align-items": "center"
-                    }
-                ), ]
-        )
+    plot_id = renderer.next_id()
+    plot = html.Div(
+        className="plot",
+        children=[
+            html.Thead(plot_name),
+            dcc.Graph(id=source.name + "graph"),
+            html.Div(
+                children=[
+                    html.B("X "),
+                    dcc.Dropdown(
+                        className="dropdown-button",
+                        id=source.name + 'x-dropdown',
+                        options=[{'label': col, 'value': col} for col
+                                 in available_columns],
+                        value=x_col,
+                        style={
+                            "width": "80%",
+                            "display": "inline-bock"
+                        }
+                    )
+                ],
+                style={
+                    "display": "inline-flex",
+                    'width': '49%',
+                    "float": "left",
+                    "align-items": "center"
+                }
+            ),
+            html.Div(
+                children=[
+                    html.B("Y (multiple) "),
+                    dcc.Dropdown(
+                        className="dropdown-button",
+                        id=source.name + 'y-dropdown',
+                        options=[{'label': col, 'value': col} for col
+                                 in available_columns],
+                        value=y_cols,
+                        multi=True,
+                        style={"width": "80%"}
+                    )
+                ],
+                style={
+                    "display": "inline-flex",
+                    'width': '49%',
+                    "float": "right",
+                    "align-items": "center"
+                }
+            ), ]
     )
+    renderer.plots[plot_id] = plot
 
     @renderer.app.callback(
         Output(source.name + "graph", "figure"),

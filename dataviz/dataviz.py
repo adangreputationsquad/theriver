@@ -15,7 +15,8 @@ class DataStudyRenderer:
         self.app = Dash(__name__)
         self.app.title = title
         self.desc = desc
-        self.plots: list[html.Div] = []
+        self.plots: dict[str, html.Div] = dict()
+        self._next_id = -1
 
     def run(self, debug):
         self.app.layout = self.create_layout()
@@ -36,7 +37,7 @@ class DataStudyRenderer:
             dash_draggable.GridLayout(
                 className="draggable",
                 id='draggable',
-                children=self.plots
+                children=list(self.plots.values()),
             ),
             html.Hr(),
         ]
@@ -116,3 +117,7 @@ class DataStudyRenderer:
                 return
 
         raise NotImplementedError(plot_type)
+
+    def next_id(self) -> str:
+        self._next_id += 1
+        return str(self._next_id)

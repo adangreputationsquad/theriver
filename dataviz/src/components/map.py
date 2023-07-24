@@ -61,11 +61,12 @@ def add(renderer: DataStudyRenderer, source: DfView, *args, **kwargs):
 
     fig.update_layout(layout)
 
-    renderer.plots.append(
-        html.Div(
-            className="plot",
-            children=[
-                html.Thead(plot_name),
-                dcc.Graph(id=source.name + "graph", figure=go.Figure(fig))]
-        )
+    plot_id = renderer.next_id()
+    plot = html.Div(
+        className="plot",
+        children=[
+            html.Thead(plot_name),
+            dcc.Graph(id=source.name + "graph", figure=go.Figure(fig))]
     )
+
+    renderer.plots[plot_id] = plot

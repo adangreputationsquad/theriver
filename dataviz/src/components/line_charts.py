@@ -22,8 +22,8 @@ def add(renderer: DataStudyRenderer, source: DfView, *args, **kwargs):
         raise NotImplementedError()
 
     available_columns = data.columns
-    renderer.plots.append(
-        html.Div(
+    plot_id = renderer.next_id()
+    plot = html.Div(
             className="plot",
             children=[
                 html.Thead(plot_name),
@@ -67,7 +67,9 @@ def add(renderer: DataStudyRenderer, source: DfView, *args, **kwargs):
                     }
                 ), ]
         )
-    )
+
+    renderer.plots[plot_id] = plot
+
 
     @renderer.app.callback(
         Output(source.name + "graph", "figure"),

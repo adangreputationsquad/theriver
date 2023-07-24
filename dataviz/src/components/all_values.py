@@ -12,11 +12,13 @@ def add(renderer: DataStudyRenderer, source: PointView, *args, **kwargs):
         data = list(source.data.values())
     else:
         raise AssertionError()
-    renderer.plots.append(
-        html.Div(
+
+    plot_id = renderer.next_id()
+    plot = html.Div(
 
             className="plot",
             children=[
                 html.Thead(plot_name),
                 html.Div([str(data)], className="plot")])
-    )
+
+    renderer.plots[plot_id] = plot

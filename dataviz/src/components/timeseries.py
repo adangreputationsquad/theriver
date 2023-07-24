@@ -81,15 +81,15 @@ def add(
             }
         )
 
-    renderer.plots.append(
-        html.Div(
-            children=[
-                html.Thead(plot_name),
-                dcc.Graph(figure=fig, id=source.name + "_graph"),
-                dropdown
-            ]
-        )
+    plot_id = renderer.next_id()
+    plot = html.Div(
+        children=[
+            html.Thead(plot_name),
+            dcc.Graph(figure=fig, id=source.name + "_graph"),
+            dropdown
+        ]
     )
+    renderer.plots[plot_id] = plot
 
     if nb_vars > 1:
         @renderer.app.callback(

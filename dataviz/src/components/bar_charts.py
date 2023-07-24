@@ -47,14 +47,17 @@ def add(
                 "align-items": "center"
             }
         )
-    renderer.plots.append(
-        html.Div(
+
+    plot_id = renderer.next_id()
+    plot = html.Div(
             className="plot",
             children=[
                 html.Thead(plot_name),
                 dcc.Graph(id=source.name + "graph"), dropdown]
-        ),
-    )
+        )
+
+    renderer.plots[plot_id] = plot
+
 
     @renderer.app.callback(
         Output(source.name + "graph", "figure"),
