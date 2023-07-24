@@ -24,52 +24,60 @@ def add(renderer: DataStudyRenderer, source: DfView, *args, **kwargs):
     available_columns = data.columns
     plot_id = renderer.next_id()
     plot = html.Div(
-            className="plot",
-            children=[
-                html.Thead(plot_name),
-                dcc.Graph(id=source.name + "graph"),
-                html.Div(
-                    children=[
-                        html.B("X "),
-                        dcc.Dropdown(
-                            className="dropdown-button",
-                            id=source.name + 'x-dropdown',
-                            options=[{'label': col, 'value': col} for col
-                                     in available_columns],
-                            value=x_col,
-                            style={"width": "80%"}
-                        )
-                    ],
-                    style={
-                        "display": "inline-flex",
-                        'width': '49%',
-                        "float": "left",
-                        "align-items": "center"
-                    }
-                ),
-                html.Div(
-                    children=[
-                        html.B("Y (multiple) "),
-                        dcc.Dropdown(
-                            id=source.name + 'y-dropdown',
-                            options=[{'label': col, 'value': col} for col
-                                     in available_columns],
-                            value=y_cols,
-                            multi=True,
-                            style={"width": "80%"}
-                        )
-                    ],
-                    style={
-                        "display": "inline-flex",
-                        'width': '49%',
-                        "float": "right",
-                        "align-items": "center"
-                    }
-                ), ]
-        )
+        className="plot",
+        children=[
+            html.Div(
+                children=[
+                    html.Thead(plot_name, style={'display': 'inline-block'}),
+                    html.Button(
+                        "X", id=plot_id + "_close", style={
+                            'display': 'inline-block', "float": 'right'
+                        }
+                        ),
+                ]
+            ),
+            dcc.Graph(id=source.name + "graph"),
+            html.Div(
+                children=[
+                    html.B("X "),
+                    dcc.Dropdown(
+                        className="dropdown-button",
+                        id=source.name + 'x-dropdown',
+                        options=[{'label': col, 'value': col} for col
+                                 in available_columns],
+                        value=x_col,
+                        style={"width": "80%"}
+                    )
+                ],
+                style={
+                    "display": "inline-flex",
+                    'width': '49%',
+                    "float": "left",
+                    "align-items": "center"
+                }
+            ),
+            html.Div(
+                children=[
+                    html.B("Y (multiple) "),
+                    dcc.Dropdown(
+                        id=source.name + 'y-dropdown',
+                        options=[{'label': col, 'value': col} for col
+                                 in available_columns],
+                        value=y_cols,
+                        multi=True,
+                        style={"width": "80%"}
+                    )
+                ],
+                style={
+                    "display": "inline-flex",
+                    'width': '49%',
+                    "float": "right",
+                    "align-items": "center"
+                }
+            ), ]
+    )
 
     renderer.plots[plot_id] = plot
-
 
     @renderer.app.callback(
         Output(source.name + "graph", "figure"),
@@ -95,3 +103,15 @@ def add(renderer: DataStudyRenderer, source: DfView, *args, **kwargs):
         fig.update_layout(layout)
 
         return fig
+
+    @renderer.app.callback(
+        Output("draggable", "children", allow_duplicate=True),
+        [Input(plot_id + "_close", "id"),
+         Input(plot_id + "_close", "n_clicks")],
+        prevent_initial_call=True
+    )
+    def close(plot_id, n_clicks):
+        plot_id = plot_id.strip("_close")
+        if n_clicks is not None:
+            renderer.plots.pop(plot_id)
+        return list(renderer.plots.values())
