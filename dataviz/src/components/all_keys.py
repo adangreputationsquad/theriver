@@ -5,6 +5,7 @@ from dataviz.dataviz import DataStudyRenderer
 
 
 def add(renderer: DataStudyRenderer, source: PointView, *args, **kwargs):
+    plot_name = kwargs.get("plot_name", source.name)
     if isinstance(source.data, list):
         data = source.data
     elif isinstance(source.data, dict):
@@ -14,5 +15,8 @@ def add(renderer: DataStudyRenderer, source: PointView, *args, **kwargs):
     renderer.plots.append(
         html.Div(
             className="plot",
-            children=[html.Div([str(data)], className="plot")])
+            children=[
+                html.Thead(plot_name),
+                html.Div([str(data)], className="plot")
+            ])
     )

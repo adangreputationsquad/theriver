@@ -4,9 +4,7 @@ from plotly.graph_objs import Layout
 
 from datafiles.views.view import DfView
 from dataviz.dataviz import DataStudyRenderer
-import plotly.express as px
 import plotly.graph_objects as go
-from math import exp
 
 layout = Layout(
     paper_bgcolor='rgba(0,0,0,0)',
@@ -16,7 +14,7 @@ _PULLED = None
 
 
 def add(renderer: DataStudyRenderer, source: DfView, *args, **kwargs):
-
+    plot_name = kwargs.get("plot_name", source.name)
     if isinstance(source.data, pd.DataFrame):
         data = source.data
         labels = kwargs.pop("names")
@@ -35,6 +33,7 @@ def add(renderer: DataStudyRenderer, source: DfView, *args, **kwargs):
         html.Div(
             className="plot",
             children=[
+                html.Thead(plot_name),
                 dcc.Graph(id=source.name + "graph"),
             ]
         )
@@ -60,7 +59,7 @@ def add(renderer: DataStudyRenderer, source: DfView, *args, **kwargs):
                 _PULLED = clickData["points"][0]["pointNumber"]
                 value = clickData["points"][0]["value"]
                 pull[int(_PULLED)] = 0.1 + ((1 - value) * 0.3)
-
+        print(labels)
         fig = go.Figure(
             data=[go.Pie(
                 labels=labels,

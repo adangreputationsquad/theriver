@@ -32,7 +32,7 @@ if __name__ == '__main__':
         key_pattern="top_country_shares/*/country",
         value_pattern="top_country_shares/*/value",
     )
-
+    ds.add_plot(countries_view, plot_type=PLOT.DICT.PIE_CHARTS)
     # engagement = json_data.make_df_view(
     #     name="test_json_to_df",
     #     patterns=["pages_per_visit/*/value", "visits/*/value",
@@ -52,4 +52,3 @@ if __name__ == '__main__':
     ds.add_plot(weighted_countries, plot_type=PLOT.DICT.MAP)
 
     ds.render(debug=True)
-

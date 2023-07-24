@@ -22,7 +22,7 @@ countries_codes = pd.read_csv(
 
 
 def add(renderer: DataStudyRenderer, source: DfView, *args, **kwargs):
-
+    plot_name = kwargs.get("plot_name", source.name)
     if isinstance(source.data, pd.DataFrame):
         countries = kwargs.pop("countries")
         values = kwargs.pop("values")
@@ -49,8 +49,7 @@ def add(renderer: DataStudyRenderer, source: DfView, *args, **kwargs):
         go.Choroplethmapbox(
             geojson=countries_geojson, locations=countries, z=values,
             colorscale="Viridis", featureidkey="properties.ISO_A3",
-        ),
-        layout={"title": source.name}
+        )
     )
 
     layout.update(
@@ -66,6 +65,7 @@ def add(renderer: DataStudyRenderer, source: DfView, *args, **kwargs):
         html.Div(
             className="plot",
             children=[
+                html.Thead(plot_name),
                 dcc.Graph(id=source.name + "graph", figure=go.Figure(fig))]
         )
     )

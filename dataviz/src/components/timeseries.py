@@ -17,6 +17,7 @@ def add(
         renderer: DataStudyRenderer, source: DfView | DictView,
         *args, **kwargs
 ):
+    plot_name = kwargs.get("plot_name", source.name)
     val_col = kwargs.pop("val_col", None)
     val_cols = kwargs.pop("val_cols", None)
     time_col = kwargs.pop("time_col", None)
@@ -83,6 +84,7 @@ def add(
     renderer.plots.append(
         html.Div(
             children=[
+                html.Thead(plot_name),
                 dcc.Graph(figure=fig, id=source.name + "_graph"),
                 dropdown
             ]

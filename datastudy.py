@@ -9,12 +9,6 @@ from datafiles.framedatafile import FrameDataFile
 from datafiles.jsondatafile import JSONDataFile
 
 
-def _smallest_index(names: list[str]) -> int:
-    indexes = [int(name.split("_")[-1]) for name in names]
-    for i in range(len(indexes) + 1):
-        if i not in indexes:
-            return i
-
 
 class DataStudy(IDataStudy):
 
@@ -26,7 +20,6 @@ class DataStudy(IDataStudy):
         :param name: Name of the study
         :param desc: Description of the study
         """
-        from datafiles.datafile import DataFile
         self._name = name
         self._desc = desc
         self._datas: dict[str, DataFile] = dict()
@@ -39,19 +32,18 @@ class DataStudy(IDataStudy):
                 f"desc={self._desc}, "
                 f"datas={list(self.datas.values())})")
 
-    def add_csv(
-            self, path: str, name: str = "", desc: str = "", *args, **kwargs
-    ) -> FrameDataFile:
+
+    def add_csv(self, path: str, *args, name: str = "", desc: str = "", **kwargs) -> FrameDataFile:
+        # Function body remains the same
         """
         Add a csv file to the DataStudy
         :param path: Path to the csv file
+        :param args: args and kwargs will be passed to read_csv from Pandas
         :param name: Name for the DataFile
         :param desc: Description for the file
-        :param args: args and kwargs will be passed to read_csv from Pandas
         :param kwargs: args and kwargs will be passed to read_csv from Pandas
         :return: FrameDataFile object holding the data
         """
-        from datafiles.framedatafile import FrameDataFile
 
         if name == "":
             name = "data_frame_" + os.path.basename(path)
@@ -73,7 +65,7 @@ class DataStudy(IDataStudy):
         :return: JSONDataFile object holding the data
         """
         if name == "":
-            name = f"data_json_" + os.path.basename(path)
+            name = "data_json_" + os.path.basename(path)
         out = JSONDataFile.from_json(self, path, name, desc)
         self.datas[name] = out
         return out

@@ -13,7 +13,7 @@ layout = Layout(
 
 
 def add(renderer: DataStudyRenderer, source: DfView, *args, **kwargs):
-
+    plot_name = kwargs.get("plot_name", source.name)
     if isinstance(source.data, pd.DataFrame):
         data = source.data
         x_col = kwargs.pop("x_col", source.data.columns[0])
@@ -30,6 +30,7 @@ def add(renderer: DataStudyRenderer, source: DfView, *args, **kwargs):
         html.Div(
             className="plot",
             children=[
+                html.Thead(plot_name),
                 dcc.Graph(id=source.name + "graph"),
                 html.Div(
                     children=[
