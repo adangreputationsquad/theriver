@@ -22,11 +22,12 @@ hr {
 
 
 .Select-menu-outer {
-    background-color: #171F26;
+    background-color: #171F26 !important;
     color: white;
 }
 
 .Select-value-label {
+    background-color: #171F26 !important;
     color: white !important;
 }
 

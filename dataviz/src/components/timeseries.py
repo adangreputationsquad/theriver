@@ -2,9 +2,9 @@ import pandas as pd
 from dash import html, dcc, Output, Input
 from plotly.graph_objs import Layout
 
-from datafiles.views.view import DfView, DictView
 from dataviz.dataviz import DataStudyRenderer
 from dateutil import parser
+from datafiles.views.view import View, DictView, DfView
 import plotly.express as px
 
 layout = Layout(
@@ -157,3 +157,32 @@ def detect_date_column(dataframe):
         raise ValueError("No date column detected")
 
     return date_column
+
+
+def html_input(view: View):
+    if isinstance(view, DfView):
+        out = html.Div(
+            [
+                html.Div(
+                    [
+                        html.P("Time column", style={'display': 'inline-block'}),
+                        dcc.Dropdown(
+                            view.data.columns,
+                        )
+                    ]
+                ),
+                html.Div(
+                    [
+                        html.P("Value column(s)", style={'display': 'inline-block'}),
+                        dcc.Dropdown(
+                            view.data.columns,
+                            multi=True
+                        )
+                    ]
+                )
+            ]
+        )
+    else:
+        out = html.Div()
+
+    return out

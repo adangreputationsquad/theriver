@@ -1,13 +1,12 @@
 import os.path
 
 from datafiles.datafile import DataFile
-from datastudy_interface import IDataStudy
+from study.datastudy_interface import IDataStudy
 from dataviz.dataviz import DataStudyRenderer
 from dataviz.plot_types import PLOT
 from datafiles.views.view import View
 from datafiles.framedatafile import FrameDataFile
 from datafiles.jsondatafile import JSONDataFile
-
 
 
 class DataStudy(IDataStudy):
@@ -24,7 +23,7 @@ class DataStudy(IDataStudy):
         self._desc = desc
         self._datas: dict[str, DataFile] = dict()
         self._views: dict[str, View] = dict()
-        self._renderer = DataStudyRenderer(name, desc)
+        self._renderer = DataStudyRenderer(self, name, desc)
 
     def __repr__(self) -> str:
         return (f"DataStudy("
@@ -32,8 +31,9 @@ class DataStudy(IDataStudy):
                 f"desc={self._desc}, "
                 f"datas={list(self.datas.values())})")
 
-
-    def add_csv(self, path: str, *args, name: str = "", desc: str = "", **kwargs) -> FrameDataFile:
+    def add_csv(
+            self, path: str, *args, name: str = "", desc: str = "", **kwargs
+            ) -> FrameDataFile:
         # Function body remains the same
         """
         Add a csv file to the DataStudy

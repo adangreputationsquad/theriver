@@ -1,6 +1,5 @@
 from abc import ABC, abstractmethod
 from typing import Any, Callable, Optional
-
 import pandas as pd
 
 
@@ -26,6 +25,18 @@ class View(ABC):
     @abstractmethod
     def apply(self, func: Callable, *args, **kwargs):
         pass
+
+    def get_plots(self):
+        from dataviz.plot_types import PLOT
+
+        if isinstance(self, PointView):
+            return [member.value for member in PLOT.POINT]
+        elif isinstance(self, ListView):
+            return [member.value for member in PLOT.LIST]
+        elif isinstance(self, DictView):
+            return [member.value for member in PLOT.DICT]
+        elif isinstance(self, DfView):
+            return [member.value for member in PLOT.DF]
 
 
 class PointView(View):
@@ -64,6 +75,7 @@ class ListView(View):
 
     def __call__(self) -> list:
         return self.data
+
 
 
 class DictView(View):

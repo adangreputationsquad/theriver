@@ -3,7 +3,7 @@ import pandas as pd
 
 from dataviz.plot_types import PLOT
 from datafiles.datafile import DataFile
-from datastudy_interface import IDataStudy
+from study.datastudy_interface import IDataStudy
 from datafiles.views.view import PointView, ListView, DictView, DfView
 
 

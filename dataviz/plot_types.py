@@ -2,31 +2,31 @@ from enum import Enum, auto
 
 
 class POINT_ENUM(Enum):
-    NAME_VALUE = auto()
-    VALUE = auto()
+    NAME_VALUE = "name, value"
+    VALUE = "value"
 
 
 class LIST_ENUM(Enum):
-    ALL_VALUES = auto()
+    ALL_VALUES = "all values"
 
 
 class DICT_ENUM(Enum):
-    ALL_VALUES = auto()
-    ALL_KEYS = auto()
-    ALL_KEYS_VALUES = auto()
-    TIMESERIES = auto()
-    PIE_CHARTS = auto()
-    MAP = auto()
+    ALL_VALUES = "all values"
+    ALL_KEYS = "all keys"
+    ALL_KEYS_VALUES = "all keys and values"
+    TIMESERIES = "timeseries"
+    PIE_CHARTS = "piecharts"
+    MAP = "map"
 
 
 class DF_ENUM(Enum):
-    TIMESERIES = auto()
-    SCATTER_PLOT = auto()
-    LINE_CHARTS = auto()
-    BAR_CHARTS = auto()
-    PIE_CHARTS = auto()
-    BUBBLE_CHARTS = auto()
-    MAP = auto()
+    TIMESERIES = "timeseries"
+    SCATTER_PLOT = "scatter plot"
+    LINE_CHARTS = "line charts"
+    BAR_CHARTS = "bar charts"
+    PIE_CHARTS = "pie charts"
+    BUBBLE_CHARTS = "bubble charts"
+    MAP = "map"
 
 
 class PLOT:

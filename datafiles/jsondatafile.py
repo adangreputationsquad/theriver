@@ -6,7 +6,7 @@ import pandas as pd
 from dataviz.plot_types import PLOT
 from .utils import transform_lists_in_dict, match_pattern_to_values
 from .datafile import DataFile
-from datastudy_interface import IDataStudy
+from study.datastudy_interface import IDataStudy
 from .views.view import PointView, ListView, DictView, DfView
 
 

@@ -1,6 +1,6 @@
 from typing import Any
 from abc import ABC, abstractmethod
-from datastudy_interface import IDataStudy
+from study.datastudy_interface import IDataStudy
 from datafiles.views.view import View, PointView, ListView, DictView, DfView
 from dataviz.plot_types import PLOT
 
