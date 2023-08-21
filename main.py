@@ -54,9 +54,11 @@ if __name__ == '__main__':
 
     ts_1 = json_data_1.make_dict_view(name="ts_1",
                                       pattern="estimated_monthly_visits/*")
+    ts_1.apply(lambda x: x.strip("estimated_monthly_visits/"), on_keys=True)
 
     ts_2 = json_data_1.make_df_view(name="ts_2",
                                     pattern="estimated_monthly_visits/*")
+    ts_2.data["key"] = ts_2.data["key"].apply(lambda x: x.strip("estimated_monthly_visits/"))
 
     weighted_countries = countries_view.apply(lambda x: x * total_traffic(),
                                               name="weighted_countries")

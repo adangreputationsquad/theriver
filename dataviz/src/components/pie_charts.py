@@ -3,7 +3,7 @@ from dash import html, dcc, Output, Input
 from plotly.graph_objs import Layout
 
 from datafiles.views.view import DfView
-from dataviz.dataviz import DataStudyRenderer
+from dataviz.irenderer import IDataStudyRenderer
 import plotly.graph_objects as go
 
 layout = Layout(
@@ -13,7 +13,7 @@ layout = Layout(
 _PULLED = None
 
 
-def add(renderer: DataStudyRenderer, source: DfView, *args, **kwargs):
+def add(renderer: IDataStudyRenderer, source: DfView, *args, **kwargs):
     plot_name = kwargs.get("plot_name", source.name)
     if isinstance(source.data, pd.DataFrame):
         data = source.data

@@ -2,10 +2,12 @@ import pandas as pd
 from dash import html, dcc, Output, Input
 from plotly.graph_objs import Layout
 
-from dataviz.dataviz import DataStudyRenderer
+from dataviz.irenderer import IDataStudyRenderer
 from dateutil import parser
-from datafiles.views.view import View, DictView, DfView
+from datafiles.views.view import DictView, DfView
 import plotly.express as px
+
+from dataviz.src.add_plot_pannel import AddPlotPanel
 
 layout = Layout(
     paper_bgcolor='rgba(0,0,0,0)',
@@ -14,7 +16,7 @@ layout = Layout(
 
 
 def add(
-        renderer: DataStudyRenderer, source: DfView | DictView,
+        renderer: IDataStudyRenderer, source: DfView | DictView,
         *args, **kwargs
 ):
     plot_name = kwargs.get("plot_name", source.name)
@@ -159,30 +161,85 @@ def detect_date_column(dataframe):
     return date_column
 
 
-def html_input(view: View):
-    if isinstance(view, DfView):
-        out = html.Div(
+class AddPlotPanelTimeseries(AddPlotPanel):
+    dd_1_id = f"AddPlotPanelTimeseries_dd_1"
+    dd_2_id = f"AddPlotPanelTimeseries_dd_2"
+    button_id = "validate_add_plot"
+
+    def __init__(self, view, renderer: IDataStudyRenderer):
+        self.renderer = renderer
+        self.view = view
+
+        # dropdowns for the case where view is a DfView
+        self.dropdown_1 = dcc.Dropdown(
+            self.view.data.columns,
+            id=AddPlotPanelTimeseries.dd_1_id
+        )
+        self.dropdown_div_1 = html.Div(
             [
-                html.Div(
-                    [
-                        html.P("Time column", style={'display': 'inline-block'}),
-                        dcc.Dropdown(
-                            view.data.columns,
-                        )
-                    ]
+                html.P(
+                    "Time column",
+                    style={
+                        "margin-bottom": "0px",
+                        "margin-top": "10px"
+                    }
                 ),
-                html.Div(
-                    [
-                        html.P("Value column(s)", style={'display': 'inline-block'}),
-                        dcc.Dropdown(
-                            view.data.columns,
-                            multi=True
-                        )
-                    ]
-                )
+                self.dropdown_1
             ]
         )
-    else:
-        out = html.Div()
 
-    return out
+        self.dropdown_2 = dcc.Dropdown(
+            view.data.columns,
+            multi=True,
+            id=AddPlotPanelTimeseries.dd_2_id
+        )
+        self.dropdown_div_2 = html.Div(
+            [
+                html.P(
+                    "Value column(s)",
+                    style={
+                        "margin-bottom": "0px",
+                        "margin-top": "10px"
+                    }
+                ),
+                self.dropdown_2
+            ]
+        )
+
+    def render(self):
+        if isinstance(self.view, DfView):
+            out = html.Div(
+                [
+                    self.dropdown_div_1,
+                    self.dropdown_div_2,
+                ]
+            )
+        else:
+            raise NotImplementedError()
+
+        return out
+
+    def register_callbacks(self):
+        @self.renderer.app.callback(
+            Output(AddPlotPanelTimeseries.button_id, "style"),
+            [Input(AddPlotPanelTimeseries.dd_1_id, "value"),
+             Input(AddPlotPanelTimeseries.dd_2_id, "value")]
+        )
+        def is_valid(value_1, value_2) -> dict:
+            print("yay")
+            print(value_1)
+            print(value_2)
+            return {"display": "block" if value_1 and value_2 else "none"}
+
+        @self.renderer.app.callback(
+            Output(AddPlotPanelTimeseries.button_id, "children"),
+            [Input(AddPlotPanelTimeseries.button_id, "n_clicks")]
+        )
+        def callback(value):
+            print(value)
+            return value
+        print("registered")
+        for output_component, callbacks in self.renderer.app.callback_map.items():
+            print(f"Output Component: {output_component}")
+            for key, val in callbacks.items():
+                print(f"    {key}: {val}")

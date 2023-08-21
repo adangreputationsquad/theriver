@@ -1,10 +1,10 @@
 from dash import html, Output, Input
 
 from datafiles.views.view import PointView
-from dataviz.dataviz import DataStudyRenderer
+from dataviz.irenderer import IDataStudyRenderer
 
 
-def add(renderer: DataStudyRenderer, source: PointView, *args, **kwargs):
+def add(renderer: IDataStudyRenderer, source: PointView, *args, **kwargs):
     plot_name = kwargs.get("plot_name", source.name)
     plot_id = renderer.next_id()
 

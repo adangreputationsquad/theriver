@@ -2,7 +2,7 @@ import os.path
 
 from datafiles.datafile import DataFile
 from study.datastudy_interface import IDataStudy
-from dataviz.dataviz import DataStudyRenderer
+from dataviz.renderer import DataStudyRenderer
 from dataviz.plot_types import PLOT
 from datafiles.views.view import View
 from datafiles.framedatafile import FrameDataFile

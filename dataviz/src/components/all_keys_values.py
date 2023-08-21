@@ -1,10 +1,10 @@
 from dash import html, Output, Input
 
 from datafiles.views.view import PointView
-from dataviz.dataviz import DataStudyRenderer
+from dataviz.irenderer import IDataStudyRenderer
 
 
-def add(renderer: DataStudyRenderer, source: PointView, *args, **kwargs):
+def add(renderer: IDataStudyRenderer, source: PointView, *args, **kwargs):
     plot_name = kwargs.get("plot_name", source.name)
     if not isinstance(source.data, dict):
         raise AssertionError()
@@ -42,7 +42,8 @@ def add(renderer: DataStudyRenderer, source: PointView, *args, **kwargs):
     renderer.plots[plot_id] = plot
 
     @renderer.app.callback(
-        Output("draggable", "children", allow_duplicate=True),
+        Output("draggable", "children",
+               allow_duplicate=True),
         [Input(plot_id + "_close", "id"),
          Input(plot_id + "_close", "n_clicks")],
         prevent_initial_call=True
