@@ -1,45 +1,50 @@
-from dash import html, Output, Input
+from dash import html
+from dash.development.base_component import Component
 
-from datafiles.views.view import PointView
+from datafiles.views.view import View
 from dataviz.irenderer import IDataStudyRenderer
+from dataviz.src.components.iplot import IPlot
 
 
-def add(renderer: IDataStudyRenderer, source: PointView, *args, **kwargs):
-    plot_name = kwargs.get("plot_name", source.name)
-    if isinstance(source.data, list):
-        data = source.data
-    elif isinstance(source.data, dict):
-        data = list(source.data.keys())
-    else:
-        raise AssertionError()
+class AllKeys(IPlot):
+    _name = "all keys"
 
-    plot_id = renderer.next_id()
-    plot = html.Div(
-        className="plot",
-        children=[
-            html.Div(
-                children=[
-                    html.Thead(plot_name, style={'display': 'inline-block'}),
-                    html.Button(
-                        "X", id=plot_id + "_close",
-                        style={'display': 'inline-block', "float": 'right'}
-                        ),
-                ]
-            ),
-            html.Div([str(data)], className="plot")
-        ]
-    )
-    renderer.plots[plot_id] = plot
+    @classmethod
+    def name(cls) -> str:
+        return cls._name
 
-    @renderer.app.callback(
-        Output("draggable", "children", allow_duplicate=True),
-        [Input(plot_id + "_close", "id"),
-         Input(plot_id + "_close", "n_clicks")],
-        prevent_initial_call=True
+    @staticmethod
+    def new(plot_id: str, renderer: IDataStudyRenderer, source: View, *args,
+            **kwargs) -> Component:
+        plot_name = kwargs.get("plot_name", source.name)
+        if isinstance(source.data, list):
+            data = source.data
+        elif isinstance(source.data, dict):
+            data = list(source.data.keys())
+        else:
+            raise AssertionError()
 
-    )
-    def close(plot_id, n_clicks):
-        plot_id = plot_id.strip("_close")
-        if n_clicks is not None:
-            renderer.plots.pop(plot_id)
-        return list(renderer.plots.values())
+        plot = html.Div(
+            className="plot",
+            children=[
+                html.Div(
+                    children=IPlot.get_header(plot_id, plot_name)
+                ),
+                html.Div([str(data)], className="plot")
+            ]
+        )
+
+        return plot
+
+    @staticmethod
+    def config_panel(selected_view: View) -> Component:
+        pass
+
+    @staticmethod
+    def are_plot_args_valid(plot_args: list, selected_view: View) -> bool:
+        pass
+
+    @staticmethod
+    def from_config(plot_id: str, renderer: IDataStudyRenderer, plot_args: list,
+                    selected_view: View):
+        pass

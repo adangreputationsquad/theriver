@@ -1,91 +1,100 @@
 import pandas as pd
 from dash import html, dcc, Output, Input
-from plotly.graph_objs import Layout
+from dash.development.base_component import Component
 
-from datafiles.views.view import DfView
+from datafiles.views.view import View
 from dataviz.irenderer import IDataStudyRenderer
 import plotly.graph_objects as go
 
-layout = Layout(
-    paper_bgcolor='rgba(0,0,0,0)',
-    plot_bgcolor='rgba(0,0,0,0)'
-)
-_PULLED = None
+from dataviz.src.components.iplot import IPlot
 
 
-def add(renderer: IDataStudyRenderer, source: DfView, *args, **kwargs):
-    plot_name = kwargs.get("plot_name", source.name)
-    if isinstance(source.data, pd.DataFrame):
-        data = source.data
-        labels = kwargs.pop("names")
-        values = kwargs.pop("values")
-        if labels is None or values is None:
-            labels, values = check_columns(data)
-        labels = data[labels]
-        values = data[values]
-    elif isinstance(source.data, dict):
-        labels = list(source.data.keys())
-        values = list(source.data.values())
-    else:
-        raise NotImplementedError()
+class PieChart(IPlot):
+    _name = "pie chart"
 
-    plot_id = renderer.next_id()
-    plot = html.Div(
+    @classmethod
+    def name(cls) -> str:
+        return cls._name
+
+    # TODO: Make sure this is robust
+    pulled = {}
+
+    @staticmethod
+    def new(plot_id: str, renderer: IDataStudyRenderer, source: View, *args,
+            **kwargs) -> Component:
+        plot_name = kwargs.get("plot_name", source.name)
+        if isinstance(source.data, pd.DataFrame):
+            data = source.data
+            labels = kwargs.pop("names")
+            values = kwargs.pop("values")
+            if labels is None or values is None:
+                labels, values = check_columns(data)
+            labels = data[labels]
+            values = data[values]
+        elif isinstance(source.data, dict):
+            labels = list(source.data.keys())
+            values = list(source.data.values())
+        else:
+            raise NotImplementedError()
+
+        plot = html.Div(
             className="plot",
             children=[
                 html.Div(
-                    children=[
-                        html.Thead(plot_name,style={'display': 'inline-block'}),
-                        html.Button("X", id=plot_id + "_close",style={'display':'inline-block', "float": 'right'}),
-                    ]
+                    children=IPlot.get_header(plot_id, plot_name)
                 ),
                 dcc.Graph(id=source.name + "graph"),
             ]
         )
-    renderer.plots[plot_id] = plot
 
-    @renderer.app.callback(
-        Output(source.name + "graph", "figure"),
-        [Input(source.name + "graph", "clickData")]
-    )
-    def update_graph(clickData):
-        global _PULLED
-        layout = kwargs.pop("layout", {})
-        layout.update(
-            template='plotly_dark',
-            plot_bgcolor='rgba(0, 0, 0, 0)',
-            paper_bgcolor='rgba(0, 0, 0, 0)',
+        @renderer.app.callback(
+            Output(source.name + "graph", "figure"),
+            [Input(source.name + "graph", "clickData")]
         )
-        pull = [0] * len(labels)
-        if clickData is not None:
-            if _PULLED == clickData["points"][0]["pointNumber"]:
-                _PULLED = None
-            else:
-                _PULLED = clickData["points"][0]["pointNumber"]
-                value = clickData["points"][0]["value"]
-                pull[int(_PULLED)] = 0.1 + ((1 - value) * 0.3)
+        def update_graph(clickData):
+            pulled = PieChart.pulled.get(source.name)
+            layout = kwargs.pop("layout", {})
+            layout.update(
+                template='plotly_dark',
+                plot_bgcolor='rgba(0, 0, 0, 0)',
+                paper_bgcolor='rgba(0, 0, 0, 0)',
+            )
+            pull = [0] * len(labels)
+            if clickData is not None:
+                if pulled == clickData["points"][0]["pointNumber"]:
+                    pulled = None
+                else:
+                    pulled = clickData["points"][0]["pointNumber"]
+                    value = clickData["points"][0]["value"]
+                    pull[int(pulled)] = 0.1 + ((1 - value) * 0.3)
+            PieChart.pulled[source.name] = pulled
+            fig = go.Figure(
+                data=[go.Pie(
+                    labels=labels,
+                    values=values,
+                    pull=pull
+                )], layout=layout
+            )
 
-        fig = go.Figure(
-            data=[go.Pie(
-                labels=labels,
-                values=values,
-                pull=pull
-            )], layout=layout
-        )
+            return fig
 
-        return fig
+        return plot
 
-    @renderer.app.callback(
-        Output("draggable", "children", allow_duplicate=True),
-        [Input(plot_id + "_close", "id"),
-         Input(plot_id + "_close", "n_clicks")],
-        prevent_initial_call=True
-    )
-    def close(plot_id, n_clicks):
-        plot_id = plot_id.strip("_close")
-        if n_clicks is not None:
-            renderer.plots.pop(plot_id)
-        return list(renderer.plots.values())
+    @staticmethod
+    def config_panel(selected_view: View) -> Component:
+        pass
+
+    @staticmethod
+    def are_plot_args_valid(plot_args: list, selected_view: View) -> bool:
+        pass
+
+    @staticmethod
+    def from_config(plot_id: str, renderer: IDataStudyRenderer, plot_args: list,
+                    selected_view: View):
+        pass
+
+
+_PULLED = None
 
 
 def check_columns(df):

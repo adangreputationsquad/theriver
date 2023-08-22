@@ -1,18 +1,24 @@
 import json
+from enum import Enum
 
 import pdfkit
-from dash import Dash, html, Input, Output, State, dcc, dash_table
+from dash import html, Input, Output, State, dash_table, ALL
 from datafiles.views.view import View, DfView, DictView, ListView, PointView
-import dash_bootstrap_components as dbc
 
 from dataviz.irenderer import IDataStudyRenderer
 from dataviz.pages.main_dashboard import drag_canvas
-from study.datastudy_interface import IDataStudy
-from dataviz.plot_types import PLOT
-import dash_draggable
+from dataviz.plot_types import PLOT, name_to_plot
 import pandas as pd
 
+from dataviz.src.components.iplot import IPlot
+
 pd.set_option('display.float_format', '{:.4e}'.format)
+DATA_PREVIEW_STYLE = {
+    "white-space": "pre-wrap",
+    "background-color": "beige",
+    "border-radius": "10px",
+    "padding": "10px",
+}
 
 
 class DataStudyRenderer(IDataStudyRenderer):
@@ -27,16 +33,17 @@ class DataStudyRenderer(IDataStudyRenderer):
 
     def create_layout(self) -> html.Div:
 
+        dc = drag_canvas(self)
+
         self.register_callbacks()
 
         return html.Div(
             className="app-div",
-            children=drag_canvas(self),
+            children=dc,
         )
 
-    def add_plot(self, view: View, plot_type: PLOT, *args, **kwargs):
-        from dataviz.src import components as cp
-
+    def add_plot(self, view: View, plot_type: Enum, *args, **kwargs):
+        plot_type: IPlot = plot_type.value
         for plot, view_type in [(PLOT.POINT, PointView),
                                 (PLOT.LIST, ListView),
                                 (PLOT.DICT, DictView),
@@ -47,52 +54,9 @@ class DataStudyRenderer(IDataStudyRenderer):
                     f"plot_type does not match with view type "
                     f"{plot_type}, {view.__class__.__name__}"
                 )
-
-        match plot_type:
-            case PLOT.POINT.NAME_VALUE:
-                cp.point_name_value.add(
-                    self, view,  # type: ignore
-                    *args, **kwargs
-                )
-                return
-            case PLOT.POINT.VALUE:
-                cp.point_value.add(self, view, *args, **kwargs)  # type: ignore
-                return
-            case PLOT.DICT.ALL_VALUES | PLOT.LIST.ALL_VALUES:
-                cp.all_values.add(self, view, *args, **kwargs)  # type: ignore
-                return
-            case PLOT.DICT.ALL_KEYS_VALUES:
-                cp.all_keys_values.add(
-                    self, view,  # type: ignore
-                    *args, **kwargs
-                )
-                return
-            case PLOT.DICT.TIMESERIES | PLOT.DF.TIMESERIES:
-                cp.timeseries.add(self, view, *args, **kwargs)  # type: ignore
-                return
-            case PLOT.DF.SCATTER_PLOT:
-                cp.scatter_plot.add(self, view, *args, **kwargs)  # type: ignore
-                return
-            case PLOT.DF.LINE_CHARTS:
-                cp.line_charts.add(self, view, *args, **kwargs)  # type: ignore
-                return
-            case PLOT.DF.BAR_CHARTS:
-                cp.bar_charts.add(self, view, *args, **kwargs)  # type: ignore
-                return
-            case PLOT.DF.PIE_CHARTS | PLOT.DICT.PIE_CHARTS:
-                cp.pie_charts.add(self, view, *args, **kwargs)  # type: ignore
-                return
-            case PLOT.DF.BUBBLE_CHARTS:
-                cp.bubble_charts.add(
-                    self, view,  # type: ignore
-                    *args, **kwargs
-                )
-                return
-            case PLOT.DF.MAP | PLOT.DICT.MAP:
-                cp.map.add(self, view, *args, **kwargs)  # type: ignore
-                return
-
-        raise NotImplementedError(plot_type)
+        next_id = self.next_id()
+        self.plots[next_id] = plot_type.new(next_id, self, view,
+                                            *args, **kwargs)
 
     def next_id(self) -> str:
         self._next_id += 1
@@ -140,12 +104,7 @@ class DataStudyRenderer(IDataStudyRenderer):
                         f"{selected_view.data}",
                         lang="python"
                     ),
-                    style={
-                        "white-space": "pre-wrap",
-                        "background-color": "beige",
-                        "border-radius": "10px",
-                        "padding": "10px",
-                    },
+                    style=DATA_PREVIEW_STYLE,
                 )
                 print(selected_view)
             elif isinstance(selected_view, ListView):
@@ -154,12 +113,7 @@ class DataStudyRenderer(IDataStudyRenderer):
                         f"{selected_view.data}",
                         lang="python"
                     ),
-                    style={
-                        "white-space": "pre-wrap",
-                        "background-color": "beige",
-                        "border-radius": "10px",
-                        "padding": "10px",
-                    },
+                    style=DATA_PREVIEW_STYLE,
                 )
                 print(selected_view)
             elif isinstance(selected_view, DictView):
@@ -169,12 +123,7 @@ class DataStudyRenderer(IDataStudyRenderer):
                         f"{json.dumps(selected_view.data, indent=4)}",
                         lang="python"
                     ),
-                    style={
-                        "white-space": "pre-wrap",
-                        "background-color": "beige",
-                        "border-radius": "10px",
-                        "padding": "10px",
-                    },
+                    style=DATA_PREVIEW_STYLE,
                 )
                 print(selected_view)
             else:
@@ -207,7 +156,7 @@ class DataStudyRenderer(IDataStudyRenderer):
         @self.app.callback(
             Output("modal", "is_open"),
             [Input("add_plot", "n_clicks"),
-             Input("close", "n_clicks")],
+             Input("validate_add_plot", "n_clicks")],
             [State("modal", "is_open")],
         )
         def toggle_modal(n1, n2, is_open):
@@ -231,12 +180,36 @@ class DataStudyRenderer(IDataStudyRenderer):
         @self.app.callback(
             Output("plot_args_div", "children"),
             [Input("select_plot_dropdown", "value"),
-             Input("select_view_dropdown", "value")]
+             Input("select_view_dropdown", "value"),
+             Input("plot_args_div", "children"), ],
+            [State("select_plot_dropdown", "value")],
         )
-        def _plot_args_callback(value_plot, value_view):
+        def _plot_args_callback(plot_name, value_view, plot_args_div_children,
+                                select_plot_state):
+            from dataviz.pages.add_plot_modal import plot_args_div_callback
             selected_view = self.study.views.get(value_view)
-            print("WIP")
-            print(value_plot)
-            print(value_view)
-            print(selected_view)
-            raise NotImplementedError()
+            return plot_args_div_callback(plot_name, selected_view,
+                                          plot_args_div_children,
+                                          select_plot_state)
+
+        @self.app.callback(
+            Output("validate_add_plot", "style"),
+            [Input({"type": "add_plot_arg", "index": ALL}, "value"),
+             Input("select_plot_dropdown", "value"),
+             Input("select_view_dropdown", "value"),
+             Input("validate_add_plot", "style"),
+             ]
+        )
+        def update_validate_add_plot(values, selected_plot, selected_view,
+                                     style) -> dict:
+            if style is None:
+                style = {}
+            style.update({"display": "None"})
+            if selected_view is None or selected_plot is None:
+                return style
+            selected_view = self.study.views.get(selected_view)
+            selected_plot = name_to_plot(selected_plot)
+
+            if selected_plot.are_plot_args_valid(values, selected_view):
+                style.update({"display": "block"})
+            return style

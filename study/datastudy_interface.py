@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
+from enum import Enum
+
 from datafiles.views.view import View
-from dataviz.plot_types import PLOT
 
 
 class IDataStudy(ABC):
@@ -32,5 +33,5 @@ class IDataStudy(ABC):
         pass
 
     @abstractmethod
-    def add_plot(self, view: View, plot_type: PLOT, *args, **kwargs):
+    def add_plot(self, view: View, plot_type: Enum, *args, **kwargs):
         pass

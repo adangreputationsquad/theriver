@@ -1,10 +1,14 @@
 from dash import html
 import dash_bootstrap_components as dbc
+from dash.development.base_component import Component
+
+from datafiles.views.view import View
 from dataviz.irenderer import IDataStudyRenderer
 from dash import dcc
 
 
 def modal_add_plot(renderer: IDataStudyRenderer):
+    print("rendering modal_add_plot")
     return dbc.ModalBody(
         children=[dbc.Modal(
             [
@@ -29,19 +33,14 @@ def modal_add_plot(renderer: IDataStudyRenderer):
                             ]
                         ),
                         html.Div(id="plot_args_div"),
-                        # TODO: Add generic panel to configurate new plot
 
                     ],
                     style={"height": "80vh"}
                 ),
                 dbc.ModalFooter([
                     dbc.Button(
-                        "CLOSE BUTTON", id="close",
-                        className="ml-auto"
-                    ),
-                    dbc.Button(
                         "VALIDATE", id="validate_add_plot",
-                        className="ml-auto"
+                        className="ml-auto",
                     )
                 ]),
             ],
@@ -62,3 +61,28 @@ def modal_add_plot(renderer: IDataStudyRenderer):
             "max-height": "none", "height": "90%"
         },
     )
+
+
+def plot_args_div_callback(plot_name, selected_view, plot_args_div_children,
+                           select_plot_state) -> list[Component]:
+    updated_config = []
+
+    # If we don't have any plot selected or if we changed the plot, we must
+    # update the plot args panel
+    try:
+        if ((not plot_args_div_children and plot_name) or
+                (plot_name != select_plot_state)):
+            updated_config = _update_plot_args_div(plot_name, selected_view)
+    except NotImplementedError:
+        print(len(updated_config))
+    return updated_config
+
+
+def _update_plot_args_div(plot_name, selected_view: View) -> list:
+    match plot_name:
+        case "timeseries":
+            from dataviz.src.components.timeseries import Timeseries
+            return Timeseries.config_panel(selected_view)
+        case _:
+            raise NotImplementedError()
+        # return updated_config, apply_button_style

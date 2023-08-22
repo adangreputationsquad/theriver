@@ -1,4 +1,5 @@
 import os.path
+from enum import Enum
 
 from datafiles.datafile import DataFile
 from study.datastudy_interface import IDataStudy
@@ -90,7 +91,7 @@ class DataStudy(IDataStudy):
         """
         self._renderer.run(debug)
 
-    def add_plot(self, view: View, plot_type: PLOT, *args, **kwargs):
+    def add_plot(self, view: View, plot_type: Enum, *args, **kwargs):
         """
         Add a plot to the DataStudy
 

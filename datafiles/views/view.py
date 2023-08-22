@@ -30,13 +30,13 @@ class View(ABC):
         from dataviz.plot_types import PLOT
 
         if isinstance(self, PointView):
-            return [member.value for member in PLOT.POINT]
+            return [member.value.name() for member in PLOT.POINT]
         elif isinstance(self, ListView):
-            return [member.value for member in PLOT.LIST]
+            return [member.value.name() for member in PLOT.LIST]
         elif isinstance(self, DictView):
-            return [member.value for member in PLOT.DICT]
+            return [member.value.name() for member in PLOT.DICT]
         elif isinstance(self, DfView):
-            return [member.value for member in PLOT.DF]
+            return [member.value.name() for member in PLOT.DF]
 
 
 class PointView(View):
