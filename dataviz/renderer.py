@@ -79,7 +79,7 @@ class DataStudyRenderer(IDataStudyRenderer):
                         id='table',
                         columns=[{"name": i, "id": i}
                                  for i in selected_view.data.columns],
-                        data=selected_view.data.applymap(
+                        data=selected_view.data.head(10).applymap(
                             lambda x: f"{x:.5e}" if isinstance(
                                 x, float
                             ) else x

@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from typing import Literal
 
 from dash import html, dcc
 from dash.development.base_component import Component
@@ -32,6 +33,15 @@ class IPlot(ABC):
     @abstractmethod
     def from_config(next_id: str, renderer: IDataStudyRenderer, plot_args: list,
                     selected_view: View):
+        """
+
+        :param next_id:
+        :param renderer:
+        :param plot_args: Arguments gotten by the call back
+        Input({"type": "add_plot_arg", "index": ALL}, "value")
+        :param selected_view:
+        :return:
+        """
         pass
 
     @classmethod
@@ -46,7 +56,7 @@ class IPlot(ABC):
     @staticmethod
     def get_header(plot_id, name):
         return [
-            html.Thead(name,
+            html.Thead(f"{name}, id: {plot_id}",
                        style={'display': 'inline-block'}),
             html.Button(
                 "X", id={"type": "close_plot", "index": plot_id}, style={
@@ -76,3 +86,46 @@ class IPlot(ABC):
                 graph,
             ]
         )
+
+    @staticmethod
+    def html_dropdown(title, index, options, multi=False):
+        return [
+            html.P(
+                title,
+                style={
+                    "margin-bottom": "0px",
+                    "margin-top": "10px"
+                }
+            ),
+            dcc.Dropdown(
+                options,
+                multi=multi,
+                id={"type": "add_plot_arg", "index": index}
+            )
+        ]
+
+    InputType = Literal["text", "number", "password", "email", "search",
+                        "tel", "url", "range", "hidden"]
+
+    @staticmethod
+    def html_input(title, index,
+                   input_type: InputType = "text",
+                   placeholder: str = ""):
+        accepted_type = ["text", "number", "password", "email", "search",
+                          "tel", "url", "range", "hidden"]
+        if input_type not in accepted_type:
+            raise ValueError(f"{input_type} not in {accepted_type}")
+        return [
+            html.P(
+                title,
+                style={
+                    "margin-bottom": "0px",
+                    "margin-top": "10px"
+                }
+            ),
+            dcc.Input(
+                placeholder=placeholder,
+                type=input_type,
+                id={"type": "add_plot_arg", "index": index}
+            )
+        ]

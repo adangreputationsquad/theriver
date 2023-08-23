@@ -9,8 +9,8 @@ import plotly.express as px
 from dataviz.src.components.iplot import IPlot
 
 
-class BarChart(IPlot):
-    _name = "bar-chart"
+class Histogram(IPlot):
+    _name = "histogram"
 
     @classmethod
     def name(cls) -> str:
@@ -38,7 +38,7 @@ class BarChart(IPlot):
 
         layout = kwargs.pop("layout", {})
 
-        fig = px.bar(
+        fig = px.histogram(
             data_frame=data, x=x_col, y=y_col, color=color,
             title="Graph with Column Selection"
         )
@@ -69,9 +69,9 @@ class BarChart(IPlot):
     @staticmethod
     def config_panel(selected_view: View) -> list[Component]:
         return (
-            IPlot.html_dropdown("X column", 0, selected_view.data.columns) +
-            IPlot.html_dropdown("Y column", 1, selected_view.data.columns) +
-            IPlot.html_dropdown("Color column", 2, selected_view.data.columns)
+                IPlot.html_dropdown("X column", 0, selected_view.data.columns) +
+                IPlot.html_dropdown("Y column", 1, selected_view.data.columns) +
+                IPlot.html_dropdown("Color column", 2, selected_view.data.columns)
         )
 
     @staticmethod
@@ -83,6 +83,6 @@ class BarChart(IPlot):
     @staticmethod
     def from_config(plot_id: str, renderer: IDataStudyRenderer, plot_args: list,
                     selected_view: View):
-        return BarChart.new(plot_id, renderer, selected_view,
+        return Histogram.new(plot_id, renderer, selected_view,
                             x_col=plot_args[0], y_col=plot_args[1],
                             color=plot_args[2])

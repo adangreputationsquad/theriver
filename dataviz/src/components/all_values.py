@@ -35,14 +35,14 @@ class AllValues(IPlot):
         return plot
 
     @staticmethod
-    def config_panel(selected_view: View) -> Component:
-        pass
+    def config_panel(selected_view: View) -> list[Component]:
+        return []
 
     @staticmethod
     def are_plot_args_valid(plot_args: list, selected_view: View) -> bool:
-        pass
+        return True
 
     @staticmethod
     def from_config(plot_id: str, renderer: IDataStudyRenderer, plot_args: list,
                     selected_view: View):
-        pass
+        return AllValues.new(plot_id, renderer, selected_view)

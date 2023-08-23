@@ -17,6 +17,7 @@ class DICT_ENUM(Enum):
     ALL_KEYS = cp.all_keys.AllKeys
     ALL_KEYS_VALUES = cp.all_keys_values.AllKeysValues
     TIMESERIES = cp.timeseries.Timeseries
+    SCATTER_PLOT = cp.scatter_plot.ScatterPlot
     PIE_CHARTS = cp.pie_charts.PieChart
     MAP = cp.map.Map
 
@@ -26,6 +27,7 @@ class DF_ENUM(Enum):
     SCATTER_PLOT = cp.scatter_plot.ScatterPlot
     LINE_CHARTS = cp.line_charts.LineChart
     BAR_CHARTS = cp.bar_charts.BarChart
+    HISTOGRAM = cp.histogram.Histogram
     PIE_CHARTS = cp.pie_charts.PieChart
     BUBBLE_CHARTS = cp.bubble_charts.BubbleChart
     MAP = cp.map.Map

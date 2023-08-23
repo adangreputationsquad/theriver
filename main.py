@@ -19,6 +19,23 @@ if __name__ == '__main__':
         name="My first data but json",
         desc="This one is a json"
     )
+    olympics = ds.add_csv(
+        path="data/example_data_2.csv",
+        sep=",",
+        name="Olympics medals",
+        desc="list of medals won during the olympics",
+    )
+    olympics_view = olympics.make_df_view("Olympics medals")
+    olympics_view.data = olympics_view.data[olympics_view.data["Country"].isin([
+        "FRA", "USA", "GBR", "ITA", "RUS"
+    ])]
+
+    olympics_view_less_dense = olympics.make_df_view("Olympics medals less dense")
+    olympics_view_less_dense.data = olympics_view_less_dense.data[
+        olympics_view_less_dense.data["Country"].isin([
+        "FRA", "USA", "GBR", "ITA", "RUS"
+    ])]
+    olympics_view_less_dense.data = olympics_view_less_dense.data.head(100)
 
     json_data_1 = ds.add_json(
         path="data/example_data.json",

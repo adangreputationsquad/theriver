@@ -173,7 +173,7 @@ class FrameDataFile(DataFile):
 
     def make_df_view(self,
                      name: str,
-                     cols: list[str] | str,
+                     cols: list[str] | str = None,
                      rows: Optional[list[int]] = None,
                      plot: Optional[PLOT.DF] = None,
                      *args, **kwargs
@@ -191,7 +191,11 @@ class FrameDataFile(DataFile):
         if isinstance(cols, str):
             cols = [cols]
 
-        df = self.data[cols]
+        if cols is None:
+            df = self.data
+        else:
+            df = self.data[cols]
+
         if rows is not None:
             df = df.loc[rows]
 

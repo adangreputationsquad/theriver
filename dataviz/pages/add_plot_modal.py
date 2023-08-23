@@ -6,6 +6,8 @@ from datafiles.views.view import View
 from dataviz.irenderer import IDataStudyRenderer
 from dash import dcc
 
+from dataviz.plot_types import name_to_plot
+
 
 def modal_add_plot(renderer: IDataStudyRenderer):
     print("rendering modal_add_plot")
@@ -72,17 +74,9 @@ def plot_args_div_callback(plot_name, selected_view, plot_args_div_children,
     try:
         if ((not plot_args_div_children and plot_name) or
                 (plot_name != select_plot_state)):
-            updated_config = _update_plot_args_div(plot_name, selected_view)
+            # Config panel given by the plot type
+            updated_config = name_to_plot(plot_name).config_panel(selected_view)
     except NotImplementedError:
         print(len(updated_config))
     return updated_config
 
-
-def _update_plot_args_div(plot_name, selected_view: View) -> list:
-    match plot_name:
-        case "timeseries":
-            from dataviz.src.components.timeseries import Timeseries
-            return Timeseries.config_panel(selected_view)
-        case _:
-            raise NotImplementedError()
-        # return updated_config, apply_button_style

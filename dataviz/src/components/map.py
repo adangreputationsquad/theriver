@@ -4,7 +4,7 @@ import pandas as pd
 from dash import html, dcc, Output, Input
 from dash.development.base_component import Component
 
-from datafiles.views.view import View
+from datafiles.views.view import View, DfView, DictView
 from dataviz.irenderer import IDataStudyRenderer
 import plotly.graph_objects as go
 
@@ -74,19 +74,38 @@ class Map(IPlot):
                 html.Div(
                     children=IPlot.get_header(plot_id, plot_name)
                 ),
-                dcc.Graph(id=source.name + "graph", figure=go.Figure(fig))]
+                dcc.Graph(id=f"{source.name}_{plot_id}_graph", figure=go.Figure(fig))]
         )
         return plot
 
     @staticmethod
-    def config_panel(selected_view: View) -> Component:
-        pass
+    def config_panel(selected_view: View) -> list[Component]:
+        if isinstance(selected_view, DfView):
+            return [IPlot.html_dropdown("Country_column", 0,
+                                        selected_view.data.columns),
+                    IPlot.html_dropdown("Value_column", 1,
+                                        selected_view.data.columns, multi=True)
+                    ]
+        elif isinstance(selected_view, DictView):
+            return []
+        else:
+            raise NotImplementedError()
 
     @staticmethod
     def are_plot_args_valid(plot_args: list, selected_view: View) -> bool:
-        pass
+        if isinstance(selected_view, DictView):
+            return True
+        elif isinstance(selected_view, DfView):
+            return all(plot_args) and plot_args
+        raise NotImplementedError()
 
     @staticmethod
     def from_config(plot_id: str, renderer: IDataStudyRenderer, plot_args: list,
                     selected_view: View):
-        pass
+        print("Making map")
+        if isinstance(selected_view, DictView):
+            return Map.new(plot_id, renderer, selected_view)
+        elif isinstance(selected_view, DfView):
+            return Map.new(plot_id, renderer, selected_view,
+                           countries=plot_args[0], values=plot_args[1])
+        raise NotImplementedError()

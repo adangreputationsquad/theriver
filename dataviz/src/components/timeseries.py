@@ -1,5 +1,5 @@
 import pandas as pd
-from dash import html, dcc, Output, Input
+from dash import html, dcc
 
 from dataviz.irenderer import IDataStudyRenderer
 from dateutil import parser
@@ -53,8 +53,6 @@ class Timeseries(IPlot):
             data[time_col] = source.data[time_col].apply(parser.parse)
         else:
             raise NotImplementedError()
-        print(val_cols)
-        print(time_col, val_col)
         layout = kwargs.pop("layout", {})
         fig = px.line(
             data_frame=data, x=time_col, y=val_col,
@@ -101,30 +99,6 @@ class Timeseries(IPlot):
             ]
         )
 
-        if nb_vars > 1:
-            @renderer.app.callback(
-                Output(source.name + "_graph", "figure"),
-                [Input(source.name + "_y-dropdown", "value")]
-            )
-            def update_graph(y_cols):
-                layout = kwargs.pop("layout", {})
-
-                fig = px.line(
-                    data_frame=data, x=time_col, y=y_cols,
-                    title="Graph with Column Selection"
-                )
-
-                layout.update(
-                    yaxis={'title': ', '.join(y_cols) if y_cols else "y"},
-                    template='plotly_dark',
-                    plot_bgcolor='rgba(0, 0, 0, 0)',
-                    paper_bgcolor='rgba(0, 0, 0, 0)',
-                )
-
-                fig.update_layout(layout)
-
-                return fig
-
         return plot
 
     @staticmethod
@@ -152,31 +126,15 @@ class Timeseries(IPlot):
     @staticmethod
     def config_panel(selected_view: View):
         if isinstance(selected_view, DfView):
-            return [
-                html.P(
-                    "Time column",
-                    style={
-                        "margin-bottom": "0px",
-                        "margin-top": "10px"
-                    }
-                ),
-                dcc.Dropdown(
-                    selected_view.data.columns,
-                    id={"type": "add_plot_arg", "index": 0}
-                ),
-                html.P(
-                    "Value column(s)",
-                    style={
-                        "margin-bottom": "0px",
-                        "margin-top": "10px"
-                    }
-                ),
-                dcc.Dropdown(
-                    selected_view.data.columns,
-                    multi=True,
-                    id={"type": "add_plot_arg", "index": 0}
-                )
-            ]
+            return (
+                IPlot.html_dropdown("Time column",
+                                    0,
+                                    options=selected_view.data.columns) +
+                IPlot.html_dropdown("Time column",
+                                    1,
+                                    options=selected_view.data.columns,
+                                    multi=True)
+            )
         elif isinstance(selected_view, DictView):
             return []
         raise NotImplementedError()
@@ -184,20 +142,24 @@ class Timeseries(IPlot):
     @staticmethod
     def are_plot_args_valid(plot_args, selected_view):
         if isinstance(selected_view, DictView):
+            try:
+                _ = [parser.parse(date_str)
+                     for date_str in selected_view.data.keys()]
+            except (parser.ParserError, TypeError):
+                return False
             return True
         elif isinstance(selected_view, DfView):
-            print(all(plot_args) and plot_args)
             return all(plot_args) and plot_args
         raise NotImplementedError()
 
     @staticmethod
-    def from_config(next_id, renderer, plot_args, selected_view):
+    def from_config(plot_id, renderer, plot_args, selected_view):
         if isinstance(selected_view, DfView):
             return Timeseries.new(
-                next_id,
+                plot_id,
                 renderer=renderer,
                 source=selected_view,
                 time_col=plot_args[0],
                 val_cols=plot_args[1])
         elif isinstance(selected_view, DictView):
-            return Timeseries.new(next_id, renderer, selected_view)
+            return Timeseries.new(plot_id, renderer, selected_view)
