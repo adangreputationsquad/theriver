@@ -11,6 +11,7 @@ from dataviz.plot_types import PLOT, name_to_plot
 import pandas as pd
 
 from dataviz.src.components.iplot import IPlot
+from dataviz.assets.ids import IDs
 
 pd.set_option('display.float_format', '{:.4e}'.format)
 DATA_PREVIEW_STYLE = {
@@ -66,13 +67,19 @@ class DataStudyRenderer(IDataStudyRenderer):
 
         # Callback that makes the preview of the data selected
         @self.app.callback(
-            Output("view_preview", "children"),
-            [Input("select_view_dropdown", "value")]
+            Output(IDs.add_plot_modal.preview, "children"),
+            [Input(IDs.add_plot_modal.dropdown_views, "value")]
+        )
+        @self.app.callback(
+            Output(IDs.add_view_modal.preview, "children"),
+            [Input(IDs.add_view_modal.dropdown_views, "value")]
         )
         def _view_preview_callback(value):
+            print(value)
             if value is None:
                 return []
             selected_view = self.study.views[value]
+            print(selected_view)
             if isinstance(selected_view, DfView):
                 display = html.Div(
                     dash_table.DataTable(
@@ -132,8 +139,8 @@ class DataStudyRenderer(IDataStudyRenderer):
 
         # Callback that hide or display the dropdown if a view is selected
         @self.app.callback(
-            Output("select_plot_dropdown_div", "style"),
-            [Input("select_view_dropdown", "value")]
+            Output(IDs.add_plot_modal.dropdown_plots_div, "style"),
+            [Input(IDs.add_plot_modal.dropdown_views, "value")]
         )
         def _select_plot_dropdown_callback_1(value):
             if value is None:
@@ -143,8 +150,8 @@ class DataStudyRenderer(IDataStudyRenderer):
         # Callback that fills the dropdown with possible plots if a view is
         # selected
         @self.app.callback(
-            Output("select_plot_dropdown", "options"),
-            [Input("select_view_dropdown", "value")]
+            Output(IDs.add_plot_modal.dropdown_plots, "options"),
+            [Input(IDs.add_plot_modal.dropdown_views, "value")]
         )
         def _select_plot_dropdown_callback_2(value):
             if value is None:
@@ -154,20 +161,31 @@ class DataStudyRenderer(IDataStudyRenderer):
 
         # Callback that hide or show the modal when we want to add a plot
         @self.app.callback(
-            Output("modal", "is_open"),
-            [Input("add_plot", "n_clicks"),
-             Input("validate_add_plot", "n_clicks")],
-            [State("modal", "is_open")],
+            Output(IDs.add_plot_modal.id, "is_open"),
+            [Input(IDs.main_dashboard.add_plot_button, "n_clicks"),
+             Input(IDs.add_plot_modal.validate_button, "n_clicks")],
+            [State(IDs.add_plot_modal.id, "is_open")],
         )
-        def toggle_modal(n1, n2, is_open):
+        def toggle_modal_add_plot(n1, n2, is_open):
+            if n1 or n2:
+                return not is_open
+            return is_open
+
+        @self.app.callback(
+                Output(IDs.add_view_modal.id, "is_open"),
+                [Input(IDs.main_dashboard.add_view_button, "n_clicks"),
+                 Input(IDs.add_view_modal.validate_button, "n_clicks")],
+                [State(IDs.add_view_modal.id, "is_open")],
+            )
+        def toggle_modal_add_view(n1, n2, is_open):
             if n1 or n2:
                 return not is_open
             return is_open
 
         # Callback that download the page when the download button is pressed
         @self.app.callback(
-            Output("download", "style"),
-            Input("download", "n_clicks"),
+            Output(IDs.main_dashboard.download_button, "style"),
+            Input(IDs.main_dashboard.download_button, "n_clicks"),
         )
         def _download(n):
             if n is not None:
@@ -178,14 +196,15 @@ class DataStudyRenderer(IDataStudyRenderer):
             return {}
 
         @self.app.callback(
-            Output("plot_args_div", "children"),
-            [Input("select_plot_dropdown", "value"),
-             Input("select_view_dropdown", "value"),
-             Input("plot_args_div", "children"), ],
-            [State("select_plot_dropdown", "value")],
+            Output(IDs.add_plot_modal.config_panel_div, "children"),
+            [Input(IDs.add_plot_modal.dropdown_plots, "value"),
+             Input(IDs.add_plot_modal.dropdown_views, "value"),
+             Input(IDs.add_plot_modal.config_panel_div, "children"), ],
+            [State(IDs.add_plot_modal.dropdown_plots, "value")],
         )
         def _plot_args_callback(plot_name, value_view, plot_args_div_children,
                                 select_plot_state):
+
             from dataviz.pages.add_plot_modal import plot_args_div_callback
             selected_view = self.study.views.get(value_view)
             return plot_args_div_callback(plot_name, selected_view,
@@ -193,11 +212,11 @@ class DataStudyRenderer(IDataStudyRenderer):
                                           select_plot_state)
 
         @self.app.callback(
-            Output("validate_add_plot", "style"),
+            Output(IDs.add_plot_modal.validate_button, "style"),
             [Input({"type": "add_plot_arg", "index": ALL}, "value"),
-             Input("select_plot_dropdown", "value"),
-             Input("select_view_dropdown", "value"),
-             Input("validate_add_plot", "style"),
+             Input(IDs.add_plot_modal.dropdown_plots, "value"),
+             Input(IDs.add_plot_modal.dropdown_views, "value"),
+             Input(IDs.add_plot_modal.validate_button, "style"),
              ]
         )
         def update_validate_add_plot(values, selected_plot, selected_view,
